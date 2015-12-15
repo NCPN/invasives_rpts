@@ -212,6 +212,68 @@ Err_Handler:
 End Sub
 
 ' ---------------------------------
+' SUB:          AddListToTable
+' Description:  Populate table from listbox
+' Assumptions:  -
+' Parameters:   lbx - listbox control
+' Returns:      -
+' Throws:       none
+' References:   none
+' Source/date:  Bonnie Campbell, June 3, 2015 - for NCPN tools
+' Adapted:      -
+' Revisions:
+'   BLC - 6/3/2015 - initial version
+' ---------------------------------
+Public Sub AddListToTable(lbx As ListBox)
+
+On Error GoTo Err_Handler
+
+Dim aryFields() As String
+Dim aryFieldTypes() As Variant
+Dim strCode As String, strSpecies As String, strLUCode As String
+Dim iRow As Integer, iTransectOnly As Integer, iTgtAreaID As Integer
+    
+    iRow = lbx.ListCount - 1 'Forms("frm_Tgt_Species").Controls("lbxTgtSpecies").ListCount - 1
+    
+    ReDim Preserve aryFields(0 To iRow)
+        
+    'header row (iRow = 0)
+    aryFields(0) = "Code;Species;LUCode;Transect_Only;Target_Area_ID"   'iRow = 0
+    aryFieldTypes = Array(dbText, dbText, dbText, dbInteger, dbInteger)
+
+    'data rows (iRow > 0)
+    For iRow = 1 To lbx.ListCount - 1
+        
+        ' ---------------------------------------------------
+        '  NOTE: listbox column MUST have a non-zero width to retrieve its value
+        ' ---------------------------------------------------
+         strCode = lbx.Column(0, iRow) 'column 0 = Master_PLANT_Code (Code)
+         strSpecies = lbx.Column(1, iRow) 'column 1 = Species name (Species)
+         strLUCode = lbx.Column(2, iRow) 'column 2 = LU_Code (LUCode)
+         iTransectOnly = Nz(lbx.Column(3, iRow), 0) 'column 3 = Transect_Only (TransectOnly)
+         iTgtAreaID = Nz(lbx.Column(4, iRow), 0) 'column 4 = Target_Area_ID (TgtAreaID)
+        
+        aryFields(iRow) = strCode & ";" & strSpecies & ";" & strLUCode & ";" & iTransectOnly & ";" & iTgtAreaID
+        
+    Next
+    
+    'save the existing records to temp_Listbox_Recordset & replace any existing records
+    SetListRecordset lbx, True, aryFields, aryFieldTypes, "temp_Listbox_Recordset", True
+
+Exit_Sub:
+    Exit Sub
+    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - PopulateList[mod_App_Data])"
+    End Select
+    Resume Exit_Sub
+End Sub
+
+
+' ---------------------------------
 ' FUNCTION:     getParkState
 ' Description:  Retrieve the state associated with a park (via tlu_Parks)
 ' Assumptions:  Park state is properly identified in tlu_Parks
@@ -260,6 +322,55 @@ Err_Handler:
       Case Else
         MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
             "Error encountered (#" & Err.Number & " - getParkState[mod_App_Data])"
+    End Select
+    Resume Exit_Function
+End Function
+
+' ---------------------------------
+' FUNCTION:     IsUsedTargetArea
+' Description:  Determine if the target area is in use by a target list
+' Parameters:   TgtAreaID - target area idenifier (integer)
+' Returns:      boolean - true if target area is in use, false if not
+' Throws:       none
+' References:   none
+' Source/date:
+' Adapted:      Bonnie Campbell, June 3, 2015 - for NCPN tools
+' Revisions:
+'   BLC - 6/3/2015  - initial version
+' ---------------------------------
+Public Function IsUsedTargetArea(TgtAreaID As Integer) As Boolean
+
+On Error GoTo Err_Handler
+    
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim strSQL As String
+    
+    'default
+    IsUsedTargetArea = False
+    
+    'generate SQL ==> NOTE: LIMIT 1; syntax not viable for Access, use SELECT TOP x instead
+    strSQL = "SELECT TOP 1 Target_Area_ID FROM tbl_Target_Species WHERE Target_Area_ID = " & TgtAreaID & ";"
+            
+    'fetch data
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset(strSQL)
+    
+    'assume only 1 record returned
+    If rs.RecordCount > 0 Then
+        IsUsedTargetArea = True
+    Else
+        GoTo Exit_Function
+    End If
+       
+Exit_Function:
+    Exit Function
+    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - IsUsedTargetArea[mod_App_Data])"
     End Select
     Resume Exit_Function
 End Function

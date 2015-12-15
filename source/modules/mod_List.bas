@@ -609,9 +609,8 @@ Err_Handler:
     Resume Exit_Sub
 End Sub
 
-
 ' ---------------------------------
-' SUB:          SetListRecordset
+' SUB:          AddListRecordset
 ' Description:  Add list items to existing records in a list recordset table via DAO.
 ' Assumptions:  Recordset contains the same number and type of fields as the list recordset table.
 ' Parameters:   tblName - temporary table name (string)

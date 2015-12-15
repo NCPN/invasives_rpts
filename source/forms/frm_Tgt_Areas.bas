@@ -10,9 +10,9 @@ Begin Form
     GridX =24
     GridY =24
     DatasheetFontHeight =11
-    ItemSuffix =12
-    Right =10272
-    Bottom =8316
+    ItemSuffix =13
+    Right =7248
+    Bottom =4596
     DatasheetGridlinesColor =14806254
     RecSrcDt = Begin
         0xc1f3db6ed487e440
@@ -70,6 +70,20 @@ Begin Form
         Begin Line
             BorderLineStyle =0
             BorderThemeColorIndex =0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Image
+            BackStyle =0
+            OldBorderStyle =0
+            BorderLineStyle =0
+            SizeMode =3
+            PictureAlignment =2
+            BorderColor =16777215
+            GridlineColor =16777215
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
             GridlineThemeColorIndex =1
             GridlineShade =65.0
         End
@@ -281,7 +295,7 @@ Begin Form
                     OverlapFlags =223
                     Left =300
                     Top =2820
-                    Width =6576
+                    Width =6846
                     Height =300
                     BorderColor =8355711
                     ForeColor =8355711
@@ -291,140 +305,8 @@ Begin Form
                     GridlineColor =10921638
                     LayoutCachedLeft =300
                     LayoutCachedTop =2820
-                    LayoutCachedWidth =6876
+                    LayoutCachedWidth =7146
                     LayoutCachedHeight =3120
-                End
-                Begin CommandButton
-                    OverlapFlags =215
-                    Left =4200
-                    Top =2820
-                    Width =420
-                    Height =300
-                    TabIndex =2
-                    ForeColor =4210752
-                    Name ="Command6"
-                    Caption ="Delete Target Area"
-                    ControlTipText ="Delete Record"
-                    GridlineColor =10921638
-                    OnClickEmMacro = Begin
-                        Version =196611
-                        ColumnsShown =10
-                        Begin
-                            Action ="OnError"
-                            Argument ="0"
-                        End
-                        Begin
-                            Action ="GoToControl"
-                            Argument ="=[Screen].[PreviousControl].[Name]"
-                        End
-                        Begin
-                            Action ="ClearMacroError"
-                        End
-                        Begin
-                            Condition ="Not [Form].[NewRecord]"
-                            Action ="RunCommand"
-                            Argument ="223"
-                        End
-                        Begin
-                            Condition ="[Form].[NewRecord] And Not [Form].[Dirty]"
-                            Action ="Beep"
-                        End
-                        Begin
-                            Condition ="[Form].[NewRecord] And [Form].[Dirty]"
-                            Action ="RunCommand"
-                            Argument ="292"
-                        End
-                        Begin
-                            Condition ="[MacroError]<>0"
-                            Action ="MsgBox"
-                            Argument ="=[MacroError].[Description]"
-                            Argument ="-1"
-                            Argument ="0"
-                        End
-                        Begin
-                            Comment ="_AXL:<?xml version=\"1.0\" encoding=\"UTF-16\" standalone=\"no\"?>\015\012<UserI"
-                                "nterfaceMacro For=\"Command6\" xmlns=\"http://schemas.microsoft.com/office/acces"
-                                "sservices/2009/11/application\" xmlns:a=\"http://schemas.microsoft.com/office/ac"
-                                "cessservices/2009/11/forms\"><S"
-                        End
-                        Begin
-                            Comment ="_AXL:tatements><Action Name=\"OnError\"/><Action Name=\"GoToControl\"><Argument "
-                                "Name=\"ControlName\">=[Screen].[PreviousControl].[Name]</Argument></Action><Acti"
-                                "on Name=\"ClearMacroError\"/><ConditionalBlock><If><Condition>Not [Form].[NewRec"
-                                "ord]</Condition><Stat"
-                        End
-                        Begin
-                            Comment ="_AXL:ements><Action Name=\"DeleteRecord\"/></Statements></If></ConditionalBlock>"
-                                "<ConditionalBlock><If><Condition>[Form].[NewRecord] And Not [Form].[Dirty]</Cond"
-                                "ition><Statements><Action Name=\"Beep\"/></Statements></If></ConditionalBlock><C"
-                                "onditionalBlock><"
-                        End
-                        Begin
-                            Comment ="_AXL:If><Condition>[Form].[NewRecord] And [Form].[Dirty]</Condition><Statements>"
-                                "<Action Name=\"UndoRecord\"/></Statements></If></ConditionalBlock><ConditionalBl"
-                                "ock><If><Condition>[MacroError]&lt;&gt;0</Condition><Statements><Action Name=\"M"
-                                "essageBox\"><Argu"
-                        End
-                        Begin
-                            Comment ="_AXL:ment Name=\"Message\">=[MacroError].[Description]</Argument></Action></Stat"
-                                "ements></If></ConditionalBlock></Statements></UserInterfaceMacro>"
-                        End
-                    End
-                    ImageData = Begin
-                        0x2800000010000000100000000100200000000000000000000000000000000000 ,
-                        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-                        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-                        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-                        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-                        0x0000000000000000b0a090ff302010ff302010ff302010ff302010ff302010ff ,
-                        0x302010ff302010ff302010ff302010ff302010ff302010ff302010ff00000000 ,
-                        0x0000000000000000b0a090fffff8f0fffff0f0ffffe8e0fff0e8e0fff0e0d0ff ,
-                        0xf0d8d0fff0d8c0fff0d8c0fff0d8c0fff0d8c0fff0d8c0ff302010ff00000000 ,
-                        0x0000000000000000b0a090ffffffffffe06830ffe06830ffe06830ffd06830ff ,
-                        0xd06830ffd06830ffd06030ffc06030ff904820ffffe0d0ff302010ff00000000 ,
-                        0x0000000000000000b0a090ffffffffffd06830ffffb080ffffa880ffffa070ff ,
-                        0xf09870fff09060ffa0b0f0ff1020e0ffc0c8f0ffffe0d0ff302010ff00000000 ,
-                        0x00000000a0a8f0ffb0a090ffffffffffe06830ffe06830ffe06830ffd06830ff ,
-                        0xd06830ffe0e0f0ff0028ffff1028f0ff4050d0ffffe0d0ff302010ff00000000 ,
-                        0x4050e0ff0010b0ffb0a090ffffffffffffffffffffffffffffffffffffffffff ,
-                        0xfff8f0ffffe8e0ff2048ffff1038ffff1028ffffe0e8f0ff302010ff7088f0ff ,
-                        0x0018c0ff6078f0ffb0a090ffb0a090ffb0a090ffb0a090ffb0a090ffb0a090ff ,
-                        0xb0a090ffb0a090ffe0e0f0ff3050ffff2040ffff8090f0ffb0b8f0ff0028f0ff ,
-                        0x4058f0ff00000000000000000000000000000000000000000000000000000000 ,
-                        0x000000000000000000000000d0d8f0ff4060ffff3050ffff2040ffff3050ffff ,
-                        0xe0e8f0ff00000000000000000000000000000000000000000000000000000000 ,
-                        0x00000000000000000000000000000000c0d0f0ff4068ffff4060ffffc0c8f0ff ,
-                        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-                        0x000000000000000000000000c0c8f0ff6078ffff6078ffff6080ffff5070ffff ,
-                        0xe0e0f0ff00000000000000000000000000000000000000000000000000000000 ,
-                        0x0000000000000000b0b8f0ff6078ffff6078ffffb0c0f0fff0f0f0ff7088ffff ,
-                        0x6078ffffc0d0f0ff000000000000000000000000000000000000000000000000 ,
-                        0x0000000090a0ffff6078ffff6078ffffd0d8f0ff000000000000000000000000 ,
-                        0xb0b8f0ff8098ffff000000000000000000000000000000000000000000000000 ,
-                        0x000000008098ffff6080ffffd0d8f0ff00000000000000000000000000000000 ,
-                        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-                        0x0000000000000000000000000000000000000000000000000000000000000000 ,
-                        0x0000000000000000
-                    End
-
-                    LayoutCachedLeft =4200
-                    LayoutCachedTop =2820
-                    LayoutCachedWidth =4620
-                    LayoutCachedHeight =3120
-                    Gradient =0
-                    BackThemeColorIndex =1
-                    BackTint =100.0
-                    OldBorderStyle =0
-                    BorderColor =14136213
-                    HoverColor =15060409
-                    PressedColor =9592887
-                    HoverForeColor =4210752
-                    PressedForeColor =4210752
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =3
-                    WebImagePaddingBottom =3
-                    Overlaps =1
                 End
                 Begin Line
                     BorderWidth =2
@@ -452,6 +334,23 @@ Begin Form
                     LayoutCachedHeight =3360
                     BorderTint =50.0
                 End
+                Begin Image
+                    PictureType =2
+                    Left =4140
+                    Top =2820
+                    Width =540
+                    Height =300
+                    BorderColor =10921638
+                    Name ="imgDelete"
+                    Picture ="delete"
+                    GridlineColor =10921638
+
+                    LayoutCachedLeft =4140
+                    LayoutCachedTop =2820
+                    LayoutCachedWidth =4680
+                    LayoutCachedHeight =3120
+                    TabIndex =2
+                End
             End
         End
         Begin Section
@@ -471,72 +370,9 @@ Begin Form
                     ForeColor =4210752
                     Name ="btnDeleteTgtArea"
                     Caption ="Delete Target Area"
+                    OnClick ="[Event Procedure]"
                     ControlTipText ="Delete Record"
                     GridlineColor =10921638
-                    OnClickEmMacro = Begin
-                        Version =196611
-                        ColumnsShown =10
-                        Begin
-                            Action ="OnError"
-                            Argument ="0"
-                        End
-                        Begin
-                            Action ="GoToControl"
-                            Argument ="=[Screen].[PreviousControl].[Name]"
-                        End
-                        Begin
-                            Action ="ClearMacroError"
-                        End
-                        Begin
-                            Condition ="Not [Form].[NewRecord]"
-                            Action ="RunCommand"
-                            Argument ="223"
-                        End
-                        Begin
-                            Condition ="[Form].[NewRecord] And Not [Form].[Dirty]"
-                            Action ="Beep"
-                        End
-                        Begin
-                            Condition ="[Form].[NewRecord] And [Form].[Dirty]"
-                            Action ="RunCommand"
-                            Argument ="292"
-                        End
-                        Begin
-                            Condition ="[MacroError]<>0"
-                            Action ="MsgBox"
-                            Argument ="=[MacroError].[Description]"
-                            Argument ="-1"
-                            Argument ="0"
-                        End
-                        Begin
-                            Comment ="_AXL:<?xml version=\"1.0\" encoding=\"UTF-16\" standalone=\"no\"?>\015\012<UserI"
-                                "nterfaceMacro For=\"btnDeleteTgtArea\" xmlns=\"http://schemas.microsoft.com/offi"
-                                "ce/accessservices/2009/11/application\" xmlns:a=\"http://schemas.microsoft.com/o"
-                                "ffice/accessservices/2009/11/f"
-                        End
-                        Begin
-                            Comment ="_AXL:orms\"><Statements><Action Name=\"OnError\"/><Action Name=\"GoToControl\"><"
-                                "Argument Name=\"ControlName\">=[Screen].[PreviousControl].[Name]</Argument></Act"
-                                "ion><Action Name=\"ClearMacroError\"/><ConditionalBlock><If><Condition>Not [Form"
-                                "].[NewRecord]</Conditi"
-                        End
-                        Begin
-                            Comment ="_AXL:on><Statements><Action Name=\"DeleteRecord\"/></Statements></If></Condition"
-                                "alBlock><ConditionalBlock><If><Condition>[Form].[NewRecord] And Not [Form].[Dirt"
-                                "y]</Condition><Statements><Action Name=\"Beep\"/></Statements></If></Conditional"
-                                "Block><Conditiona"
-                        End
-                        Begin
-                            Comment ="_AXL:lBlock><If><Condition>[Form].[NewRecord] And [Form].[Dirty]</Condition><Sta"
-                                "tements><Action Name=\"UndoRecord\"/></Statements></If></ConditionalBlock><Condi"
-                                "tionalBlock><If><Condition>[MacroError]&lt;&gt;0</Condition><Statements><Action "
-                                "Name=\"MessageBo"
-                        End
-                        Begin
-                            Comment ="_AXL:x\"><Argument Name=\"Message\">=[MacroError].[Description]</Argument></Acti"
-                                "on></Statements></If></ConditionalBlock></Statements></UserInterfaceMacro>"
-                        End
-                    End
                     ImageData = Begin
                         0x2800000010000000100000000100200000000000000000000000000000000000 ,
                         0x0000000000000000000000000000000000000000000000000000000000000000 ,
@@ -640,6 +476,7 @@ Option Explicit
 '
 ' Source/date:  Bonnie Campbell, 2/11/2015
 ' Revisions:    BLC - 2/11/2015 - initial version
+'               BLC - 6/3/2015  - prevent existing list target area deletion
 ' =================================
 
 ' ---------------------------------
@@ -898,6 +735,73 @@ Err_Handler:
       Case Else
         MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
             "Error encountered (#" & Err.Number & " - btnAddTgtArea_Click[form_frm_Tgt_Areas])"
+    End Select
+    Resume Exit_Sub
+End Sub
+
+' ---------------------------------
+' SUB:          btnDeleteTgtArea_Click
+' Description:  Delete a target area
+' Parameters:   -
+' Returns:      -
+' Throws:       none
+' References:   none
+' Source/date:  Generated from form's embedded macros
+' Adapted:      Bonnie Campbell, June 3, 2015 - for NCPN tools
+' Revisions:
+'   BLC - 6/3/2015  - initial version
+' ---------------------------------
+Private Sub btnDeleteTgtArea_Click()
+On Error GoTo Err_Handler
+
+    ' _AXL:<?xml version="1.0" encoding="UTF-16" standalone="no"?>
+    ' <UserInterfaceMacro For="Command6" xmlns="http://schemas.microsoft.com/office/accessservices/2009/11/application" xmlns:a="http://schemas.microsoft.com/office/accessservices/2009/11/forms"><S
+    ' _AXL:tatements><Action Name="OnError"/><Action Name="GoToControl"><Argument Name="ControlName">=[Screen].[PreviousControl].[Name]</Argument></Action><Action Name="ClearMacroError"/><ConditionalBlock><If><Condition>Not [Form].[NewRecord]</Condition><Stat
+    ' _AXL:ements><Action Name="DeleteRecord"/></Statements></If></ConditionalBlock><ConditionalBlock><If><Condition>[Form].[NewRecord] And Not [Form].[Dirty]</Condition><Statements><Action Name="Beep"/></Statements></If></ConditionalBlock><ConditionalBlock><
+    ' _AXL:If><Condition>[Form].[NewRecord] And [Form].[Dirty]</Condition><Statements><Action Name="UndoRecord"/></Statements></If></ConditionalBlock><ConditionalBlock><If><Condition>[MacroError]&lt;&gt;0</Condition><Statements><Action Name="MessageBox"><Argu
+    ' _AXL:ment Name="Message">=[MacroError].[Description]</Argument></Action></Statements></If></ConditionalBlock></Statements></UserInterfaceMacro>
+    On Error Resume Next
+    
+    DoCmd.GoToControl Screen.PreviousControl.name
+    Err.Clear
+    
+    If (Not Form.NewRecord) Then
+    
+        'check if target area in use before deleting
+        If (IsUsedTargetArea(Form.Target_Area_ID)) Then
+            Beep
+            MsgBox "Sorry, " & Me.Target_Area & " is already used in a target species list and " & _
+                   "cannot be deleted at this time. " & _
+                   vbCrLf & vbCrLf & "Please contact the project ecologist/data manager for guidance.", _
+                   vbExclamation, Me.Target_Area & " Target Area in Use!"
+        Else
+            DoCmd.RunCommand acCmdDeleteRecord
+        End If
+    
+    
+    End If
+    
+    If (Form.NewRecord And Not Form.Dirty) Then
+        Beep
+    End If
+    
+    If (Form.NewRecord And Form.Dirty) Then
+        DoCmd.RunCommand acCmdUndo
+    End If
+    
+    If (MacroError <> 0) Then
+        Beep
+        MsgBox MacroError.Description, vbOKOnly, ""
+    End If
+
+Exit_Sub:
+    Exit Sub
+    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - btnDeleteTgtArea_Click[form_frm_Tgt_Areas])"
     End Select
     Resume Exit_Sub
 End Sub

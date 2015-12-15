@@ -13,19 +13,18 @@ Begin Form
     Width =9120
     DatasheetFontHeight =11
     ItemSuffix =17
-    Left =2604
-    Top =3288
-    Right =6300
-    Bottom =7308
+    Left =570
+    Top =1560
+    Right =4260
+    Bottom =5580
     DatasheetGridlinesColor =14806254
-    OrderBy ="Species"
     RecSrcDt = Begin
-        0xf3f72ab2be95e440
+        0x72f936e78d96e440
     End
     RecordSource ="SELECT tlu_NCPN_Plants.Master_PLANT_Code AS Code, tlu_NCPN_Plants.Master_Species"
         " AS Species, Switch(tlu_NCPN_Plants.LU_Code Is Null,\" \",tlu_NCPN_Plants.LU_Cod"
-        "e<>\"\",tlu_NCPN_Plants.LU_Code) AS LUCode, NULL AS Transect_Only, NULL AS Tgt_A"
-        "rea_ID FROM tlu_NCPN_Plants;"
+        "e<>\"\",tlu_NCPN_Plants.LU_Code) AS LUCode FROM tlu_NCPN_Plants ORDER BY tlu_NCP"
+        "N_Plants.Master_Species;"
     DatasheetFontName ="Calibri"
     PrtMip = Begin
         0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
@@ -38,6 +37,8 @@ Begin Form
     AllowPivotChartView =0
     AllowPivotChartView =0
     FilterOnLoad =0
+    OrderByOnLoad =0
+    OrderByOnLoad =0
     ShowPageMargins =0
     DisplayOnSharePointSite =1
     AllowLayoutView =0
@@ -312,7 +313,7 @@ Begin Form
                     BorderColor =10921638
                     ForeColor =4210752
                     Name ="tbxTgtAreaID"
-                    ControlSource ="Tgt_Area_ID"
+                    ControlSource ="Target_Area_ID"
                     GridlineColor =10921638
 
                     LayoutCachedLeft =7560
@@ -581,6 +582,7 @@ End Sub
 '   BLC - 5/26/2015 - added 0 for passing base value for TgtAreaID to target species listbox
 '   BLC - 5/27/2015 - added check for missing LU Codes
 '                     (species w/ missing codes cannot be added to target list)
+'   BLC - 6/9/2015 -  enable preview and save list buttons on species double click
 ' ---------------------------------
 Public Sub tbxCode_DblClick(Cancel As Integer)
 On Error GoTo Err_Handler
@@ -623,6 +625,10 @@ On Error GoTo Err_Handler
         Forms("frm_Tgt_Species").Controls("lblTgtSpeciesCount").Caption = .ListCount - 1 & " species"
         
     End With
+    
+    'enable preview & save
+    Forms("frm_Tgt_Species").Controls("btnPreviewList").Enabled = True
+    Forms("frm_Tgt_Species").Controls("btnSaveList").Enabled = True
     
 Exit_Sub:
     Exit Sub

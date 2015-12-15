@@ -60,6 +60,44 @@ Declare Function IsIconic Lib "user32" (ByVal hwnd As Long) As _
 '=================================================================
 
 ' ---------------------------------
+' FUNCTION:     CloseFormsReports
+' Description:  close forms, reports
+' Assumptions:  -
+' Parameters:   -
+' Returns:      N/A
+' Throws:       none
+' References:   none
+' Source/date:  Susan Harkins, July 21, 2009
+'   http://www.techrepublic.com/blog/microsoft-office/automatically-close-all-the-open-forms-and-reports-in-an-access-database/
+' Adapted:      Bonnie Campbell, June 9, 2015 - for NCPN tools
+' Revisions:
+'   BLC - 6/9/2015  - initial version
+' ---------------------------------
+Public Function CloseFormsReports()
+On Error GoTo Err_Handler
+
+    'Close all open forms
+    Do While Forms.count > 0
+        DoCmd.Close acForm, Forms(0).name
+    Loop
+    
+    Do While Reports.count > 0
+        DoCmd.Close acReport, Reports(0).name
+    Loop
+
+Exit_Function:
+    Exit Function
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - CloseFormsReports[mod_Forms])"
+    End Select
+    Resume Exit_Function
+End Function
+
+' ---------------------------------
 ' FUNCTION:     ChangeBackColor
 ' Description:  change background color of control
 ' Assumptions:  -

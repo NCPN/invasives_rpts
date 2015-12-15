@@ -8,14 +8,15 @@ Begin Form
     DatasheetGridlinesBehavior =3
     GridX =24
     GridY =24
+    Width =3360
     DatasheetFontHeight =9
     Left =540
-    Top =36
-    Right =8028
-    Bottom =2916
+    Top =30
+    Right =4980
+    Bottom =1875
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
-        0xf526e8835493e440
+        0x3eae0d5d9196e440
     End
     RecordSource ="tlu_Datum"
     DatasheetFontName ="Arial"
@@ -27,7 +28,7 @@ Begin Form
     DatasheetGridlinesColor12 =12632256
     Begin
         Begin Section
-            Height =2880
+            Height =1020
             BackColor =-2147483633
             Name ="Detail"
         End

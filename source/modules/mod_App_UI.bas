@@ -29,6 +29,7 @@ Option Explicit
 '               BLC, 4/21/2015 - Adapted for NCPN Invasives Reports - Species Target List tool
 '                                Converted QAQC to Create, Logs to View
 '               BLC, 5/26/2015 - Added error handling
+'               BLC, 6/4/2015 - Changed View to Search tab, added "or modify" for create tab
 ' =================================
 Public Sub PopulateInsetTitle(ctrl As Control, strContext As String)
 On Error GoTo Err_Handler
@@ -37,7 +38,7 @@ On Error GoTo Err_Handler
     
     Select Case strContext
         Case "Create" ' Create main
-            strTitle = "Choose what you'd like to create"
+            strTitle = "Choose what you'd like to create or modify"
         Case "CreateTgtLists" ' Create species target lists
             strTitle = "Create > Species Target Lists"
         Case "AddTgtArea" ' Add target areas
@@ -47,8 +48,8 @@ On Error GoTo Err_Handler
             strTitle = "Data Validation > " & strContext
         Case "Data Validation" ' QA/QC analysis project selection
             strTitle = "Data Validation > Field > Duplicates (NFV)" '<<<<< Make this so it ties back to the selected analysis
-        Case "View" ' View main
-            strTitle = "View"
+        Case "Search" ' Search main
+            strTitle = "Species Search"
         Case "Reports" ' Reports main
             strTitle = "Reports"
         Case "CrewSpeciesList" ' Reports > Field Crew Species List
@@ -64,13 +65,13 @@ On Error GoTo Err_Handler
         Case "UtahLab" ' Exports > Utah Lab etc.
             strContext = Replace(strContext, "Lab", " Lab")
             strTitle = "Exports > " & strContext
-        Case "DB Admin" ' DB Admin main
-            strTitle = ""
+        Case "DbAdmin" ' DB Admin main
+            strTitle = "Db Admin"
     End Select
     
     If ctrl.ControlType = acLabel Then
         ctrl.Caption = strTitle
-        If strContext <> "DbAdmin" Then
+        If strContext <> "DbAdmin" Or DB_ADMIN_CONTROL = False Then
             ctrl.visible = True
         End If
     End If
@@ -102,6 +103,7 @@ End Sub
 '               BLC, 4/21/2015 - Adapted for NCPN Invasives Reports - Species Target List tool
 '                                Converted QAQC to Create, Logs to View
 '               BLC, 5/26/2015 - Added error handling
+'               BLC, 6/4/2015  - Changed View to Search
 ' =================================
 Public Sub PopulateInstructions(ctrl As Control, strContext As String)
 On Error GoTo Err_Handler
@@ -111,16 +113,21 @@ On Error GoTo Err_Handler
     
     Select Case strContext
         Case "Create" ' Create main
-            strInstructions = "Choose what you would like to create."
+            strInstructions = "Choose what you would like to create/modify."
         Case "CreateTgtLists" ' Create > Species Target Lists
-            strInstructions = "Choose the park and year for your list. Click 'Continue' to prepare your list."
+            strInstructions = "Choose the park and year for your list. Click 'Continue' to prepare your list." & vbCrLf & vbCrLf & _
+                    "Only existing lists for the current or future years may be modified." & vbCrLf & vbCrLf & _
+                    "Please contact the project lead or data management if a prior year list must be modified."
         Case "AddTgtArea" ' Create > Add Target Area
             strInstructions = "" '"Choose the park and year for your target area. Click 'Continue' to create your area."
         Case "Outliers", "MissingData", "SuspectValues", "SuspectDO", "SuspectpH", "SuspectSC", "SuspectWT", "Duplicates" ' QA/QC main
             strInstructions = "Complete the fields to define the data set or subset you are validating. " _
                     & "Leave the fields blank if you are validating all data. Click 'Run' to validate."
-        Case "View" ' View main
-            strInstructions = "The view menu is currently not in use for this application."
+        Case "Search" ' Search main
+            strInstructions = "Search for species family, name, codes. " & _
+                    "Latin, common, and state specific (UT, CO, WY) genus species names " & _
+                    "and lookup (6-letter) and ITIS codes are included." & vbCrLf & vbCrLf & _
+                    "Searches can be made across all or only a few species names/codes."
             'strInstructions = "Log your modifications to data within the edit log. " _
             '        & "Be as complete as possible to aid others in tracing data changes."
         Case "Reports" ' Reports main
@@ -143,13 +150,12 @@ On Error GoTo Err_Handler
             strInstructions = "Choose the export you would like to run."
         Case "DbAdmin" ' DB Admin main
             strInstructions = "The database administration tab is currently not in use for this application."
-            'strInstructions = ""
     End Select
     
     'populate caption & display instructions
     If ctrl.ControlType = acLabel Then
         ctrl.Caption = strInstructions
-        If strContext <> "DbAdmin" Then
+        If strContext <> "DbAdmin" Or DB_ADMIN_CONTROL = False Then
             ctrl.visible = True
         End If
     End If
@@ -220,7 +226,6 @@ Err_Handler:
     Resume Exit_Function
 End Function
 
-
 ' ---------------------------------
 ' SUB:          Initialize
 ' Description:  initialize application values
@@ -249,6 +254,41 @@ Err_Handler:
       Case Else
         MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
             "Error encountered (#" & Err.Number & " - Initialize[mod_Init])"
+    End Select
+    Resume Exit_Sub
+End Sub
+
+' ---------------------------------
+' SUB:          EnableTargetTool
+' Description:  enable the target tool button
+' Assumptions:  -
+' Parameters:   N/A
+' Returns:      N/A
+' Throws:       none
+' References:   none
+' Source/date:  Bonnie Campbell, June 4, 2015 - for NCPN tools
+' Adapted:      -
+' Revisions:
+'   BLC - 6/4/2015  - initial version
+' ---------------------------------
+Public Sub EnableTargetTool(ctrl As Control)
+On Error GoTo Err_Handler
+    
+    'enable button if connected
+    If TempVars.item("Connected") Then
+        ctrl.Enabled = True
+    Else
+        ctrl.Enabled = False
+    End If
+
+Exit_Sub:
+    Exit Sub
+    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - EnableTargetTool[mod_Init])"
     End Select
     Resume Exit_Sub
 End Sub

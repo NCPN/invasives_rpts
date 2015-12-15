@@ -145,7 +145,7 @@ On Error GoTo Err_Handler
 '    Else
 '        lngHeight = 4044
 '    End If
-    frm.Move frm.WindowLeft, height:=lngHeight, width:=lngWidth
+    frm.Move frm.WindowLeft, height:=lngHeight, Width:=lngWidth
     
 Exit_Procedure:
     Exit Sub
@@ -173,7 +173,7 @@ End Sub
 Public Sub PopulateSubformControl(ctrl As SubForm, strSubFormName As String)
     On Error GoTo Err_Handler
 
-    ctrl.SourceObject = Forms(strSubFormName)
+    ctrl.SourceObject = strSubFormName 'Forms(strSubFormName)
 
 Exit_Procedure:
     Exit Sub
@@ -417,16 +417,20 @@ End Function
 ' Source/date:  Adapted from Tom's post comment, 9/12/2009
 '               http://www.vbdotnetforums.com/gui/36561-loop-through-tab-pages-remove.html
 '               Created 06/11/2014 blc; Last modified 06/11/2014 blc.
-' Revisions:    Bonnie Campbell, June 11, 2014 - initial version
+' Adapted:      Bonnie Campbell, June 11, 2014 - initial version
+' Revisions:    BLC, June 11, 2014 - initial version
+'               BLC, June 9, 2015  - adjust for hiding tabs only with blnHideOnly
 ' =================================
-Public Sub tabPageUnhide(ctrl As TabControl, strTabName As String)
+Public Sub tabPageUnhide(ctrl As TabControl, strTabName As String, Optional blnHideOnly As Boolean)
 On Error GoTo Err_Handler
 
     Dim pg As Page
     
     For Each pg In ctrl.Pages
         If pg.name = strTabName Then
-            ctrl.Pages(pg.name).visible = True
+            If Not blnHideOnly = True Then
+                ctrl.Pages(pg.name).visible = True
+            End If
         Else
             ctrl.Pages(pg.name).visible = False
         End If
@@ -504,7 +508,6 @@ On Error GoTo Err_Handler
     End If
   Next ctl
   
-
 Exit_Function:
     Exit Function
 
@@ -881,8 +884,8 @@ Public Sub PrepareCrumbs(frm As SubForm, aryCrumbs As Variant, Optional separato
             End If
             
             'set control position
-            If intLastCtrlPosition > frm.Controls(strCtrlName).Parent.width Then
-                .Left = frm.Controls(strCtrlName).Parent.width - .width
+            If intLastCtrlPosition > frm.Controls(strCtrlName).Parent.Width Then
+                .Left = frm.Controls(strCtrlName).Parent.Width - .Width
             Else
                 .Left = intLastCtrlPosition
             End If
@@ -891,7 +894,7 @@ Public Sub PrepareCrumbs(frm As SubForm, aryCrumbs As Variant, Optional separato
 '            setControlWidth frm.Controls(strCtrlName), , frm.Controls(strCtrlName).Parent.Width
             
             'save new ctrl width for setting separator position
-            intLastCtrlWidth = .width
+            intLastCtrlWidth = .Width
         
         End With
         
@@ -904,7 +907,7 @@ Public Sub PrepareCrumbs(frm As SubForm, aryCrumbs As Variant, Optional separato
             .visible = True
             
             'determine position of next control
-            intLastCtrlPosition = .Left + .width + 10
+            intLastCtrlPosition = .Left + .Width + 10
           End With
         End If
         

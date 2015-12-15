@@ -16,8 +16,8 @@ Begin Form
     ItemSuffix =64
     Left =3855
     Top =2790
-    Right =16890
-    Bottom =10155
+    Right =17700
+    Bottom =8970
     DatasheetGridlinesColor =14806254
     RecSrcDt = Begin
         0x0a915c95ff94e440
@@ -1462,12 +1462,16 @@ End Sub
 '                     renamed tbxResultCode to tbxLUCode
 '                     changed order of tbxMasterPlantCode and tbxLUCode to populate listbox
 '                     (bugfix for search species missing proper LUcode)
+'   BLC - 6/4/2015  - added handling to disable double-click for path coming from Search tab
 ' ---------------------------------
 Private Sub tbxLUCode_DblClick(Cancel As Integer)
 On Error GoTo Err_Handler
     Dim item As String
     Dim i As Integer
     Dim lbx As ListBox
+    
+    'check if coming from search tab & disable
+    If TempVars.item("originForm") = "DisableDoubleClick" Then GoTo Exit_Sub
     
     'check for empty values --> tbxResultCode, tbxUTSpecies, tbxMasterSpecies - cannot be empty!
     If IsNull(tbxLUCode) Or Len(Trim(tbxLUCode)) = 0 Then
@@ -1673,7 +1677,7 @@ On Error GoTo Err_Handler
     
     'extend form if species count > 0
     If count > 0 Then
-        SetWindowSize Me, 8000, Me.width
+        SetWindowSize Me, 8000, Me.Width
     End If
     
     'set statusbar notice

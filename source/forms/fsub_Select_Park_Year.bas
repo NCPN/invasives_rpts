@@ -13,10 +13,10 @@ Begin Form
     Width =4320
     DatasheetFontHeight =11
     ItemSuffix =15
-    Left =8016
-    Top =4836
-    Right =12168
-    Bottom =7452
+    Left =7365
+    Top =6285
+    Right =11250
+    Bottom =8895
     DatasheetGridlinesColor =14806254
     RecSrcDt = Begin
         0xc1f3db6ed487e440
@@ -182,10 +182,10 @@ Begin Form
                     PressedForeColor =6750156
                     PressedForeThemeColorIndex =-1
                     PressedForeTint =100.0
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ComboBox
@@ -235,8 +235,8 @@ Begin Form
                     ForeColor =4138256
                     Name ="cbxYear"
                     RowSourceType ="Value List"
-                    RowSource ="\"SEL\";\"Select Year\";\"2016\";\"2016\";\"2015\";\"2015\";\"2014\";\"2014\";\""
-                        "2013\";\"2013\""
+                    RowSource ="'SEL';'Select Year';'2017';'2017';'2016';'2016';'2015';'2015';'2014';'2014';'201"
+                        "3';'2013';'2012';'2012';"
                     ColumnWidths ="0;1440"
                     DefaultValue ="\"SEL\""
                     OnChange ="[Event Procedure]"

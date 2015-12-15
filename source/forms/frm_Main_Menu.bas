@@ -15,10 +15,10 @@ Begin Form
     Width =8580
     DatasheetFontHeight =9
     ItemSuffix =10
-    Left =135
+    Left =132
     Top =300
-    Right =8970
-    Bottom =6300
+    Right =8712
+    Bottom =6048
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x81b16fedaecae340
@@ -78,10 +78,10 @@ Begin Form
                     Caption ="Link Data Tables"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -94,10 +94,10 @@ Begin Form
                     Caption ="Infestation Report"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -110,10 +110,10 @@ Begin Form
                     Caption ="Infestations by Route"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -126,10 +126,10 @@ Begin Form
                     Caption ="Close Form"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -142,10 +142,10 @@ Begin Form
                     Caption ="Infestations by Size Class"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -158,10 +158,10 @@ Begin Form
                     Caption ="Infestations by Growth Stage"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -174,10 +174,10 @@ Begin Form
                     Caption ="Monitoring Transect Data"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -190,10 +190,10 @@ Begin Form
                     Caption ="Species Cover by Route"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -206,10 +206,10 @@ Begin Form
                     Caption ="Transect Count by Route"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
                 Begin CommandButton
                     Enabled = NotDefault
@@ -243,10 +243,10 @@ Begin Form
                     PressedColor =52224
                     HoverForeColor =2375487
                     PressedForeColor =6750156
-                    WebImagePaddingLeft =2
-                    WebImagePaddingTop =2
-                    WebImagePaddingRight =1
-                    WebImagePaddingBottom =1
+                    WebImagePaddingLeft =3
+                    WebImagePaddingTop =3
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                 End
             End
         End
@@ -270,6 +270,7 @@ Option Explicit
 ' Source/date:  Bonnie Campbell, May 2015 for NCPN tools
 ' Adapted:      -
 ' Revisions:    BLC - 5/22/2015 - initial version
+'               BLC - 6/4/2015  - replaced toggle with EnableTargetTool
 ' ---------------------------------
 Private Sub Form_Load()
 On Error GoTo Err_Handler
@@ -277,13 +278,9 @@ On Error GoTo Err_Handler
     ' Verify the back-end database connections, and enable button if connected
     VerifyConnections
     
-    If TempVars.item("Connected") Then
-        btnLaunchTgtTool.Enabled = True
-        'EnableControl btnLaunchTgtTool, CTRL_ADD_ENABLED, TEXT_ENABLED
-    Else
-        btnLaunchTgtTool.Enabled = False
-        'DisableControl btnLaunchTgtTool
-    End If
+    'enable button if connected
+    EnableTargetTool btnLaunchTgtTool
+    
 Exit_Procedure:
     Exit Sub
 
@@ -308,18 +305,13 @@ End Sub
 ' Source/date:  Bonnie Campbell, May 2015 for NCPN tools
 ' Adapted:      -
 ' Revisions:    BLC - 5/22/2015 - initial version
+'               BLC - 6/4/2015  - replaced toggle with EnableTargetTool
 ' ---------------------------------
 Private Sub Form_GotFocus()
 On Error GoTo Err_Handler
     
     'enable button if connected
-    If TempVars.item("Connected") Then
-        btnLaunchTgtTool.Enabled = True
-        'EnableControl btnLaunchTgtTool, CTRL_ADD_ENABLED, TEXT_ENABLED
-    Else
-        btnLaunchTgtTool.Enabled = False
-        'DisableControl btnLaunchTgtTool
-    End If
+    EnableTargetTool btnLaunchTgtTool
     
     Me.Repaint
     
@@ -377,6 +369,7 @@ End Sub
 ' Adapted:      -
 ' Revisions:    unknown - initial version
 '               BLC - 5/28/2015 - add toggle to enable Target List Tool
+'               BLC - 6/4/2015  - replaced toggle with EnableTargetTool
 ' ---------------------------------
 Private Sub ButtonLink_Click()
 On Error GoTo Err_ButtonLink_Click
@@ -386,18 +379,11 @@ On Error GoTo Err_ButtonLink_Click
 
     stDocName = "frm_Connect_Tables"
     DoCmd.OpenForm stDocName, , , stLinkCriteria
-    
+        
     'enable button if connected
-    If TempVars.item("Connected") Then
-        btnLaunchTgtTool.Enabled = True
-        'EnableControl btnLaunchTgtTool, CTRL_ADD_ENABLED, TEXT_ENABLED
-    Else
-        btnLaunchTgtTool.Enabled = False
-        'DisableControl btnLaunchTgtTool
-    End If
-    
+    EnableTargetTool btnLaunchTgtTool
+        
     Me.Repaint
-    
 
 Exit_ButtonLink_Click:
     Exit Sub
@@ -405,8 +391,8 @@ Exit_ButtonLink_Click:
 Err_ButtonLink_Click:
     MsgBox Err.Description
     Resume Exit_ButtonLink_Click
-    
 End Sub
+
 Private Sub ButtonInfestation_Click()
 On Error GoTo Err_ButtonInfestation_Click
 
@@ -444,6 +430,7 @@ End Sub
 Private Sub ButtonClose_Click()
 On Error GoTo Err_ButtonClose_Click
 
+   CloseFormsReports
 
     DoCmd.Close
 
