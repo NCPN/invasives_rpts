@@ -284,7 +284,7 @@ Private Sub btnRun_Click()
         Case "Outliers", "MissingData", "Duplicates"
         
             dictParams.Add "ProjectID", lbxProjectID.ListIndex
-            dictParams.Add "Project", lbxProjectID.Value
+            dictParams.Add "Project", lbxProjectID.value
             dictParams.Add "Year", lbxYear.ListIndex
             dictParams.Add "qry", "qry_" & TempVars("analysis")
 
@@ -294,7 +294,7 @@ Private Sub btnRun_Click()
         Case "SuspectValues", "SuspectDO", "SuspectpH", "SuspectSC", "SuspectWT"
         
             dictParams.Add "ProjectID", lbxProjectID.ListIndex
-            dictParams.Add "Project", lbxProjectID.Value
+            dictParams.Add "Project", lbxProjectID.value
             dictParams.Add "Year", lbxYear.ListIndex
             dictParams.Add "qry", "qry_" & TempVars("analysis")
 
@@ -308,7 +308,7 @@ Private Sub btnRun_Click()
              "Flow" ' Representativeness > Stage & Flow
             
             dictParams.Add "ProjectID", lbxProjectID.ListIndex
-            dictParams.Add "Project", lbxProjectID.Value
+            dictParams.Add "Project", lbxProjectID.value
             dictParams.Add "Year", lbxYear.ListIndex
             dictParams.Add "qry", "qry_" & TempVars("analysis")
 

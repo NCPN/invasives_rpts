@@ -42,7 +42,7 @@ Public Sub initializeControls(frm As Form)
                     Else
                         tgtCtrlName = "cbx" & aryCtrls(i)
                     End If
-                    .Controls(tgtCtrlName) = Forms!frm_Switchboard.fsub_DbAdmin.Form.Controls(ctrlName).Value
+                    .Controls(tgtCtrlName) = Forms!frm_Switchboard.fsub_DbAdmin.Form.Controls(ctrlName).value
                 Next
         End Select
     End With

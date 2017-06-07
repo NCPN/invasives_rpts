@@ -12,9 +12,9 @@ Begin Form
     GridY =24
     DatasheetFontHeight =11
     ItemSuffix =22
-    Left =336
-    Top =456
-    Right =7788
+    Left =330
+    Top =450
+    Right =7785
     Bottom =4800
     DatasheetGridlinesColor =14806254
     RecSrcDt = Begin
@@ -217,10 +217,10 @@ Begin Form
                     PressedForeColor =6750156
                     PressedForeThemeColorIndex =-1
                     PressedForeTint =100.0
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ListBox
@@ -238,7 +238,7 @@ Begin Form
                     Name ="lbxParks"
                     RowSourceType ="Table/Query"
                     RowSource ="SELECT DISTINCT tbl_Target_List.Park_Code FROM tbl_Target_List ORDER BY tbl_Targ"
-                        "et_List.Park_Code;"
+                        "et_List.Park_Code; "
                     OnClick ="[Event Procedure]"
                     GridlineColor =10921638
 
@@ -278,7 +278,7 @@ Begin Form
                     Name ="lbxYears"
                     RowSourceType ="Table/Query"
                     RowSource ="SELECT DISTINCT tbl_Target_List.Target_Year FROM tbl_Target_List ORDER BY tbl_Ta"
-                        "rget_List.Target_Year;"
+                        "rget_List.Target_Year; "
                     OnClick ="[Event Procedure]"
                     GridlineColor =10921638
 
@@ -461,17 +461,18 @@ End Sub
 ' Revisions:
 '   BLC - 5/26/2015 - initial version
 '   BLC - 6/12/2015 - replaced TempVars.item("... with TempVars("...
+'   BLC - 5/10/2017 - revised to correct .Enabled = XX setting
 ' ---------------------------------
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
 On Error GoTo Err_Handler
 
     If Len(TempVars("parks")) > 0 And Len(TempVars("years")) > 0 Then
-        Me.btnLoadList.Enabled True
+        Me.btnLoadList.Enabled = True
     Else
-        Me.btnLoadList.Enabled False
+        Me.btnLoadList.Enabled = False
     End If
 
-Exit_Sub:
+Exit_Handler:
     Exit Sub
     
 Err_Handler:
@@ -480,7 +481,7 @@ Err_Handler:
         MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
             "Error encountered (#" & Err.Number & " - Form_KeyUp[form_frm_Select_List])"
     End Select
-    Resume Exit_Sub
+    Resume Exit_Handler
 End Sub
 
 ' ---------------------------------

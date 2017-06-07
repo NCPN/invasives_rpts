@@ -20,11 +20,11 @@ dbByte "DefaultView" ="2"
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
 dbBoolean "TotalsRow" ="0"
-dbBinary "GUID" = Begin
-    0x130bab6b315e3049a7418bad3e6bf946
-End
 dbText "Description" ="Park target species listings including priority, transect_only, and target_area "
     "(Target List Tool update)"
+dbBinary "GUID" = Begin
+    0xa9d8b3de7f04a644b94a9e1c6322e495
+End
 Begin
     Begin
         dbText "Name" ="tlu_NCPN_Plants.Co_Species"

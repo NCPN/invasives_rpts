@@ -1,162 +1,87 @@
-﻿Operation =1
-Option =0
-Where ="(((tbl_Locations.Unit_Code)=[Forms]![frm_Select_Infest_by_Growth]![Park_Code]) A"
-    "ND ((Year([Start_Date]))=[Forms]![frm_Select_Infest_by_Growth]![Visit_Year]) AND"
-    " ((IIf([Unit_Code] In (\"CARE\",\"DINO\",\"GOSP\",\"ZION\"),[Utah_Species],IIf(["
-    "Unit_Code]=\"FOBU\",[WY_Species],[Co_Species]))) Is Not Null))"
-Begin InputTables
-    Name ="tbl_Locations"
-    Name ="tbl_Infestation_Events"
-    Name ="tbl_Infestation"
-    Name ="tlu_NCPN_Plants"
-    Name ="tlu_Size_Class"
-    Name ="tlu_Cover_Class"
-End
-Begin OutputColumns
-    Expression ="tbl_Locations.Unit_Code"
-    Alias ="Visit_Year"
-    Expression ="Year([Start_Date])"
-    Alias ="Species"
-    Expression ="IIf([Unit_Code] In (\"CARE\",\"DINO\",\"GOSP\",\"ZION\"),[Utah_Species],IIf([Uni"
-        "t_Code]=\"FOBU\",[WY_Species],[Co_Species]))"
-    Expression ="tlu_NCPN_Plants.Master_Common_Name"
-    Expression ="tlu_Size_Class.Size_Class"
-    Expression ="tlu_Cover_Class.Cover_Class"
-    Expression ="tbl_Infestation.Pulled"
-    Expression ="tbl_Infestation.Growth_Stage"
-    Expression ="tbl_Infestation.N_Coord"
-    Expression ="tbl_Infestation.E_Coord"
-End
-Begin Joins
-    LeftTable ="tbl_Infestation"
-    RightTable ="tlu_NCPN_Plants"
-    Expression ="tbl_Infestation.Master_Code = tlu_NCPN_Plants.Master_PLANT_Code"
-    Flag =2
-    LeftTable ="tbl_Infestation"
-    RightTable ="tlu_Size_Class"
-    Expression ="tbl_Infestation.Size_Text = tlu_Size_Class.Size_Description"
-    Flag =2
-    LeftTable ="tbl_Infestation"
-    RightTable ="tlu_Cover_Class"
-    Expression ="tbl_Infestation.Cover_Text = tlu_Cover_Class.Cover_Description"
-    Flag =2
-    LeftTable ="tbl_Infestation_Events"
-    RightTable ="tbl_Infestation"
-    Expression ="tbl_Infestation_Events.Infest_Event_ID = tbl_Infestation.Infest_Event_ID"
-    Flag =2
-    LeftTable ="tbl_Locations"
-    RightTable ="tbl_Infestation_Events"
-    Expression ="tbl_Locations.Location_ID = tbl_Infestation_Events.Location_ID"
-    Flag =2
-End
-Begin OrderBy
-    Expression ="tbl_Locations.Unit_Code"
-    Flag =0
-    Expression ="Year([Start_Date])"
-    Flag =0
-End
+﻿dbMemo "SQL" ="SELECT tbl_Locations.Unit_Code, Year([Start_Date]) AS Visit_Year, IIf([Unit_Code"
+    "] In (\"CARE\",\"DINO\",\"GOSP\",\"ZION\"),[Utah_Species],IIf([Unit_Code]=\"FOBU"
+    "\",[WY_Species],[Co_Species])) AS Species, tlu_NCPN_Plants.Master_Common_Name, t"
+    "lu_Size_Class.Size_Class, tlu_Cover_Class.Cover_Class, tbl_Infestation.Pulled, t"
+    "bl_Infestation.Growth_Stage, tbl_Infestation.N_Coord, tbl_Infestation.E_Coord\015"
+    "\012FROM tbl_Locations LEFT JOIN (tbl_Infestation_Events LEFT JOIN (((tbl_Infest"
+    "ation LEFT JOIN tlu_NCPN_Plants ON tbl_Infestation.Master_Code = tlu_NCPN_Plants"
+    ".Master_PLANT_Code) LEFT JOIN tlu_Size_Class ON tbl_Infestation.Size_Text = tlu_"
+    "Size_Class.Size_Description) LEFT JOIN tlu_Cover_Class ON tbl_Infestation.Cover_"
+    "Text = tlu_Cover_Class.Cover_Description) ON tbl_Infestation_Events.Infest_Event"
+    "_ID = tbl_Infestation.Infest_Event_ID) ON tbl_Locations.Location_ID = tbl_Infest"
+    "ation_Events.Location_ID\015\012WHERE (((tbl_Locations.Unit_Code)=Forms!frm_Sele"
+    "ct_Infest_by_Growth!Park_Code) And ((Year([Start_Date]))=Forms!frm_Select_Infest"
+    "_by_Growth!Visit_Year) And ((IIf([Unit_Code] In (\"CARE\",\"DINO\",\"GOSP\",\"ZI"
+    "ON\"),[Utah_Species],IIf([Unit_Code]=\"FOBU\",[WY_Species],[Co_Species]))) Is No"
+    "t Null))\015\012ORDER BY tbl_Locations.Unit_Code, Year([Start_Date]);\015\012"
+dbMemo "Connect" =""
 dbBoolean "ReturnsRecords" ="-1"
 dbInteger "ODBCTimeout" ="60"
 dbByte "RecordsetType" ="0"
 dbBoolean "OrderByOn" ="0"
 dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
-dbBinary "GUID" = Begin
-    0x0438478aa6d03f4da6530702cba4e1f4
-End
 dbBoolean "UseTransaction" ="-1"
+dbBinary "GUID" = Begin
+    0xdaa1b2d078005941b830f79fb0067f79
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
 Begin
     Begin
         dbText "Name" ="tbl_Infestation.N_Coord"
         dbInteger "ColumnWidth" ="1275"
         dbBoolean "ColumnHidden" ="0"
+        dbLong "AggregateType" ="-1"
     End
     Begin
         dbText "Name" ="tbl_Infestation.E_Coord"
         dbInteger "ColumnWidth" ="1170"
         dbBoolean "ColumnHidden" ="0"
+        dbLong "AggregateType" ="-1"
     End
     Begin
         dbText "Name" ="tlu_Size_Class.Size_Class"
         dbInteger "ColumnWidth" ="1125"
         dbBoolean "ColumnHidden" ="0"
+        dbLong "AggregateType" ="-1"
     End
     Begin
         dbText "Name" ="tbl_Locations.Unit_Code"
         dbInteger "ColumnWidth" ="1065"
         dbBoolean "ColumnHidden" ="0"
+        dbLong "AggregateType" ="-1"
     End
     Begin
         dbText "Name" ="Visit_Year"
         dbInteger "ColumnWidth" ="1005"
         dbBoolean "ColumnHidden" ="0"
-    End
-End
-Begin
-    State =0
-    Left =18
-    Top =14
-    Right =1002
-    Bottom =338
-    Left =-1
-    Top =-1
-    Right =965
-    Bottom =144
-    Left =0
-    Top =0
-    ColumnsShown =539
-    Begin
-        Left =38
-        Top =6
-        Right =134
-        Bottom =94
-        Top =0
-        Name ="tbl_Locations"
-        Name =""
+        dbLong "AggregateType" ="-1"
+        dbBinary "GUID" = Begin
+            0x3e84f85e1b0d204bb1383b6e24a3770c
+        End
     End
     Begin
-        Left =172
-        Top =6
-        Right =268
-        Bottom =94
-        Top =1
-        Name ="tbl_Infestation_Events"
-        Name =""
+        dbText "Name" ="Species"
+        dbLong "AggregateType" ="-1"
+        dbBinary "GUID" = Begin
+            0xc45cc4dde9b38642ad8287986452ab85
+        End
     End
     Begin
-        Left =306
-        Top =6
-        Right =422
-        Bottom =94
-        Top =4
-        Name ="tbl_Infestation"
-        Name =""
+        dbText "Name" ="tlu_NCPN_Plants.Master_Common_Name"
+        dbLong "AggregateType" ="-1"
     End
     Begin
-        Left =440
-        Top =6
-        Right =568
-        Bottom =94
-        Top =12
-        Name ="tlu_NCPN_Plants"
-        Name =""
+        dbText "Name" ="tlu_Cover_Class.Cover_Class"
+        dbLong "AggregateType" ="-1"
     End
     Begin
-        Left =606
-        Top =6
-        Right =724
-        Bottom =94
-        Top =0
-        Name ="tlu_Size_Class"
-        Name =""
+        dbText "Name" ="tbl_Infestation.Pulled"
+        dbLong "AggregateType" ="-1"
     End
     Begin
-        Left =740
-        Top =6
-        Right =864
-        Bottom =94
-        Top =0
-        Name ="tlu_Cover_Class"
-        Name =""
+        dbText "Name" ="tbl_Infestation.Growth_Stage"
+        dbLong "AggregateType" ="-1"
     End
 End

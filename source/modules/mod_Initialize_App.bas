@@ -17,10 +17,12 @@ Option Explicit
 '                                   application)
 '                                WQ Utilities tool constants removed (WATER_YEAR_START & WATER_YEAR_END)
 '               BLC, 4/30/2015 - 1.02 - shifted USER_ACCESS_CONTROL, DB_SYS_TABLES, APP_SYS_TABLES to mod_App_Settings
-'                                since these are application vs. framework specific, added Level & Version #
-'                                added blnRunQueries & blnUpdateAll from mod_User
+'                                       since these are application vs. framework specific, added Level & Version #
+'                                       added blnRunQueries & blnUpdateAll from mod_User
 '               BLC, 7/7/2015  - 1.03 - added SafeStart() to set error trapping for the application
-'                                to "Break in Class Module"
+'                                       to "Break in Class Module"
+'               BLC, 6/6/2017  - 1.04 - added strUser = UserName() [from mod_User] for logging user actions in
+'                                       initApp(), fixed SQL syntax in INSERT INTO tsys_Logins()
 ' =================================
 ' HISTORY:
 ' MERGED MODULE: mod_Global_Variables (merged with mod_Initialize_App)
@@ -90,7 +92,6 @@ Sub SafeStart()
 On Error GoTo Err_Handler
 
   Application.SetOption "Error Trapping", 1
-  
 
 Exit_Procedure:
     Exit Sub
@@ -218,6 +219,9 @@ End Sub
 '               BLC, 5/28/2015 - added MAIN_APP_FORM open check to prevent Error #2450 where
 '                                frm_Tgt_List_Tool is not found on exit from frm_Connect_Dbs
 '               BLC, 6/12/2015 - replaced TempVars.item("... with TempVars("...
+'               BLC, 6/6/2017  - revised to capture Logged in Username (strUser using mod_User's UserName()) to avoid Error #3141
+'                                pointing to the SQL query to insert into tsys_Logins, fixed SQL
+'                                syntax in INSERT INTO tsys_Logins()
 ' =================================
 Public Function AppSetup()
     On Error GoTo Err_Handler
@@ -285,12 +289,16 @@ Public Function AppSetup()
     setUserAccess frm, "update"
 
     ' Log the user, login time, release number, and application mode in the systems table
+    strUser = UserName
     strRelease = Left(strReleaseID, 8) & " / " & TempVars("UserAccessLevel")
     If IsODBC("tsys_Logins") Then
         ' Use a pass-through query to test the connection for write privileges
-        strSQL = "INSERT INTO dbo.tsys_Logins " & _
-            "SELECT GETDATE() AS Time_stamp, '" & strUser & "' AS User_name, '" & _
-            strRelease & "' AS Action_taken"
+'        strSQL = "INSERT INTO dbo.tsys_Logins " & _
+'            "SELECT GETDATE() AS Time_stamp, '" & strUser & "' AS User_name, '" & _
+'            strRelease & "' AS Action_taken"
+        strSQL = "INSERT INTO dbo.tsys_Logins (Time_stamp, User_name, Action_taken) VALUES (" & _
+            "SELECT GETDATE(), '" & strUser & "', '" & _
+            strRelease & "');"
         TempVars("WritePermission") = TestODBCConnection("tsys_Logins", , strSQL, False)
         ' Notify the user if their back-end privileges are insufficient to use the application
         If TempVars("WritePermission") = False And TempVars("UserAccessLevel") <> "read only" Then
@@ -301,8 +309,11 @@ Public Function AppSetup()
         End If
     Else
         TempVars("WritePermission") = True
-        strSQL = "INSERT INTO tsys_Logins ( User_name, Action_taken ) SELECT '" _
-            & strUser & "' AS User, """ & strRelease & """ AS Action;"
+'        strSQL = "INSERT INTO tsys_Logins ( User_name, Action_taken ) SELECT '" _
+'            & strUser & "' AS User, """ & strRelease & """ AS Action;"
+        strSQL = "INSERT INTO tsys_Logins ( User_name, Action_taken ) VALUES ('" _
+            & strUser & "', """ & strRelease & """);"
+        
         DoCmd.SetWarnings False
         DoCmd.RunSQL strSQL     ' Will throw a trapped error if no write permissions
         DoCmd.SetWarnings True

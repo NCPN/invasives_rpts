@@ -1,31 +1,34 @@
-﻿Operation =1
-Option =0
-Begin InputTables
-    Name ="qry_Select_Species_Cover"
-End
-Begin OutputColumns
-    Expression ="qry_Select_Species_Cover.Unit_Code"
-    Expression ="qry_Select_Species_Cover.Visit_Year"
-End
-Begin Groups
-    Expression ="qry_Select_Species_Cover.Unit_Code"
-    GroupLevel =0
-    Expression ="qry_Select_Species_Cover.Visit_Year"
-    GroupLevel =0
-End
+﻿dbMemo "SQL" ="SELECT qry_Select_Species_Cover.Unit_Code AS Unit_Code, qry_Select_Species_Cover"
+    ".Visit_Year AS Visit_Year\015\012FROM qry_Select_Species_Cover\015\012GROUP BY q"
+    "ry_Select_Species_Cover.Unit_Code, qry_Select_Species_Cover.Visit_Year;\015\012"
+dbMemo "Connect" =""
 dbBoolean "ReturnsRecords" ="-1"
 dbInteger "ODBCTimeout" ="60"
 dbByte "RecordsetType" ="0"
 dbBoolean "OrderByOn" ="0"
 dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
-dbBinary "GUID" = Begin
-    0x24b249451e16af439245930410a20a6d
-End
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
 dbBoolean "TotalsRow" ="0"
+dbBinary "GUID" = Begin
+    0xc90c690eafc7974789f904d62e84ea30
+End
 Begin
+    Begin
+        dbText "Name" ="Expr1"
+        dbLong "AggregateType" ="-1"
+        dbBinary "GUID" = Begin
+            0x591d66e6285acc4586ea98f22673706e
+        End
+    End
+    Begin
+        dbText "Name" ="Expr2"
+        dbLong "AggregateType" ="-1"
+        dbBinary "GUID" = Begin
+            0x93e20eb7c80d1f408ab7ad401f5b2bf3
+        End
+    End
     Begin
         dbText "Name" ="qry_Select_Species_Cover.Unit_Code"
         dbInteger "ColumnWidth" ="1065"
@@ -38,27 +41,18 @@ Begin
         dbBoolean "ColumnHidden" ="0"
         dbLong "AggregateType" ="-1"
     End
-End
-Begin
-    State =0
-    Left =18
-    Top =14
-    Right =1002
-    Bottom =327
-    Left =-1
-    Top =-1
-    Right =946
-    Bottom =123
-    Left =0
-    Top =0
-    ColumnsShown =543
     Begin
-        Left =38
-        Top =6
-        Right =134
-        Bottom =120
-        Top =0
-        Name ="qry_Select_Species_Cover"
-        Name =""
+        dbText "Name" ="Unit_Code"
+        dbLong "AggregateType" ="-1"
+        dbBinary "GUID" = Begin
+            0x49647a88f446304abe8a045b5a341eac
+        End
+    End
+    Begin
+        dbText "Name" ="Visit_Year"
+        dbLong "AggregateType" ="-1"
+        dbBinary "GUID" = Begin
+            0xf3c6bda94b862c48b69b451e268a05fe
+        End
     End
 End

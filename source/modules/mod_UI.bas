@@ -101,7 +101,7 @@ End Sub
 Public Sub GetRibbonVisibility(ctrl As Office.IRibbonControl, ByRef visible)
 On Error GoTo Err_Handler
 
-    Select Case ctrl.Id
+    Select Case ctrl.ID
         Case "tabExportOptions"
             visible = True
             TempVars.Add "ribbon", True
@@ -954,7 +954,7 @@ Public Sub PrepareCrumbs(frm As SubForm, aryCrumbs As Variant, Optional separato
                 .Caption = aryCrumbs(i)
             Else
                 'hyperlink control (displaytext vs caption)
-                .Value = aryCrumbs(i)
+                .value = aryCrumbs(i)
             End If
             
             'set control position

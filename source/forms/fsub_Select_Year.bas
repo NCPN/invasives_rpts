@@ -182,10 +182,10 @@ Begin Form
                     PressedForeColor =6750156
                     PressedForeThemeColorIndex =-1
                     PressedForeTint =100.0
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ComboBox
@@ -314,7 +314,7 @@ On Error GoTo Err_Handler
     End If
     
     cbxYear.RowSource = strValueList
-    cbxYear.Value = "SEL"
+    cbxYear.value = "SEL"
     
     'disable continue to start
     btnContinue.Enabled = False
@@ -351,7 +351,7 @@ On Error GoTo Err_Handler
 
     If Len(Trim(cbxYear)) > 0 Then
         'set year
-        TempVars("TgtYear") = cbxYear.Value
+        TempVars("TgtYear") = cbxYear.value
         'enable continue
         btnContinue.Enabled = True
     End If
@@ -388,7 +388,7 @@ End Sub
 Private Sub btnContinue_Click()
 On Error GoTo Err_Handler
        
-    TempVars("TgtYear") = cbxYear.Value
+    TempVars("TgtYear") = cbxYear.value
     
     If TempVars("TgtYear") > 0 Then
     

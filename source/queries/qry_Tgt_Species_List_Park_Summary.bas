@@ -11,11 +11,11 @@ dbBoolean "OrderByOnLoad" ="-1"
 dbByte "RecordsetType" ="0"
 dbBoolean "TotalsRow" ="0"
 dbText "Description" ="Target species summary for all parks for a given year  (Target List Tool update)"
-dbBinary "GUID" = Begin
-    0x6d824cbd6a47ba4d8f427a2a27bf6c13
-End
 dbMemo "OrderBy" ="[qry_Tgt_Species_List_Park_Summary].[Family], [qry_Tgt_Species_List_Park_Summary"
     "].[Species_Name]"
+dbBinary "GUID" = Begin
+    0x53bba37f6666d44d91352a244d9fce72
+End
 Begin
     Begin
         dbText "Name" ="qry_Tgt_Species_List_Park_Summary_Data.ParkYearPriorities"

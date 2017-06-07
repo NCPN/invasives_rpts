@@ -14,16 +14,21 @@ Begin Form
     GridY =24
     DatasheetFontHeight =9
     ItemSuffix =13
-    Left =3975
-    Top =2790
-    Right =11550
-    Bottom =6975
+    Left =705
+    Top =3285
+    Right =7650
+    Bottom =6615
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x3d34192b53bbe340
     End
     Caption ="Infestation by Growth Stage"
+    OnOpen ="[Event Procedure]"
     DatasheetFontName ="Arial"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
     AllowDatasheetView =0
     AllowPivotTableView =0
     AllowPivotChartView =0
@@ -71,14 +76,14 @@ Begin Form
                     Top =2580
                     Width =1350
                     Height =299
-                    Name ="ButtonClose"
+                    Name ="btnClose"
                     Caption ="Close Form"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
                 Begin ComboBox
                     OverlapFlags =85
@@ -123,6 +128,7 @@ Begin Form
                     RowSourceType ="Table/Query"
                     RowSource ="SELECT qry_sel_Infest_Year.Visit_Year FROM qry_sel_Infest_Year; "
                     ColumnWidths ="2820"
+                    AfterUpdate ="[Event Procedure]"
 
                     Begin
                         Begin Label
@@ -145,14 +151,14 @@ Begin Form
                     Width =1350
                     Height =299
                     TabIndex =3
-                    Name ="ButtonReport"
+                    Name ="btnReport"
                     Caption ="Open Query"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
             End
         End
@@ -164,31 +170,136 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Compare Database
+Option Explicit
 
-Private Sub ButtonClose_Click()
-On Error GoTo Err_ButtonClose_Click
+' =================================
+' MODULE:       frm_Select_Infest_by_Growth
+' Level:        Form module
+' Version:      1.01
+' Description:  Transect count related functions & subroutines
+'
+' Source/date:  Unknown
+' Adapted:      Bonnie Campbell, June 2017
+' Revisions:    Unknown        - 1.00 - initial version
+'               BLC, 5/10/2017 - 1.01 - documentation, added Form_Open(), Visit_Year_AfterUpdate()
+' =================================
 
+' ---------------------------------
+'  Methods
+' ---------------------------------
 
-    DoCmd.Close
+' ---------------------------------
+' SUB:          Form_Open
+' Description:  Form opening actions
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    BLC - 5/10/2017 - initial version
+' ---------------------------------
+Private Sub Form_Open(Cancel As Integer)
+On Error GoTo Err_Handler
 
-Exit_ButtonClose_Click:
+    'initialize (year & query button disabled until park selection)
+    Me.Visit_Year.Enabled = False
+    Me.btnReport.Enabled = False
+
+Exit_Handler:
     Exit Sub
 
-Err_ButtonClose_Click:
-    MsgBox Err.Description
-    Resume Exit_ButtonClose_Click
-    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - Form_Open[frm_Select_Infest_by_Growth form])"
+    End Select
+    Resume Exit_Handler
 End Sub
 
-
+' ---------------------------------
+' SUB:          Park_Code_AfterUpdate
+' Description:  Sets park code/visit yeas filtering
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  -
+' Adapted:      Bonnie Campbell, May 2017 - initial version
+' Revisions:    Unknown         - initial version
+'               BLC - 5/10/2017 - added documentation, enabled Visit_Year
+' ---------------------------------
 Private Sub Park_Code_AfterUpdate()
+On Error GoTo Err_Handler
+
   If Not IsNull(Me!Park_Code) Then
-    Me!Visit_Year.RowSource = "SELECT Visit_Year FROM qry_sel_Infest_Year WHERE [Unit_Code] = '" & Me!Park_Code & "' ORDER BY Visit_Year"
+    Me!Visit_Year.Enabled = True
+    Me!Visit_Year.RowSource = "SELECT DISTINCT Visit_Year FROM qry_sel_Infest_Year WHERE [Unit_Code] = '" & Me!Park_Code & "' ORDER BY Visit_Year"
+    Me!Visit_Year = "" 'clear value
+    Me!btnReport.Enabled = False
     Me.Refresh
   End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - Park_Code_AfterUpdate[frm_Select_Infest_by_Growth form])"
+    End Select
+    Resume Exit_Handler
 End Sub
-Private Sub ButtonReport_Click()
-On Error GoTo Err_ButtonReport_Click
+
+' ---------------------------------
+' SUB:          Visit_Year_AfterUpdate
+' Description:  Sets park code/visit yeas filtering
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    BLC - 5/11/2017 - initial version
+' ---------------------------------
+Private Sub Visit_Year_AfterUpdate()
+On Error GoTo Err_Handler
+
+  'default
+  Me!btnReport.Enabled = False
+
+  If Not IsNull(Me!Visit_Year) Then
+    Me!btnReport.Enabled = True
+  End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - Visit_Year_AfterUpdate[frm_Select_Infest_by_Growth form])"
+    End Select
+    Resume Exit_Handler
+End Sub
+
+' ---------------------------------
+' SUB:          btnReport_Click
+' Description:  Runs report
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    JRB - unknown - initial version
+'               BLC - 6/6/2017 - added documentation, revised error handling, renamed button (ButtonX > btnX)
+' ---------------------------------
+Private Sub btnReport_Click()
+On Error GoTo Err_Handler
 
     Dim stQryName As String
 
@@ -199,11 +310,43 @@ On Error GoTo Err_ButtonReport_Click
     stQryName = "qry_Infest_by_Growth_Stage"
     DoCmd.OpenQuery stQryName
 
-Exit_ButtonReport_Click:
+Exit_Handler:
     Exit Sub
 
-Err_ButtonReport_Click:
-    MsgBox Err.Description
-    Resume Exit_ButtonReport_Click
-    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - btnReport_Click[frm_Select_Infest_by_Growth form])"
+    End Select
+    Resume Exit_Handler
+End Sub
+
+' ---------------------------------
+' SUB:          btnClose_Click
+' Description:  Closes form
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    JRB - unknown - initial version
+'               BLC - 6/6/2017 - added documentation, revised error handling, renamed button (ButtonX > btnX)
+' ---------------------------------
+Private Sub btnClose_Click()
+On Error GoTo Err_Handler
+
+    DoCmd.Close
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - btnClose_Click[frm_Select_Infest_by_Growth form])"
+    End Select
+    Resume Exit_Handler
 End Sub

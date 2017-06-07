@@ -272,10 +272,10 @@ Begin Form
                     PressedForeColor =6750156
                     PressedForeThemeColorIndex =-1
                     PressedForeTint =100.0
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin Label
@@ -427,10 +427,10 @@ Begin Form
                     PressedColor =9592887
                     HoverForeColor =4210752
                     PressedForeColor =4210752
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =3
-                    WebImagePaddingBottom =3
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =2
+                    WebImagePaddingBottom =2
                     Overlaps =1
                 End
                 Begin TextBox
@@ -526,7 +526,7 @@ On Error GoTo Err_Handler
     
     Initialize
        
-    If Len(tbxExtraArea.Value) = 0 Then
+    If Len(tbxExtraArea.value) = 0 Then
         'disable search until something is entered
         btnAddExtraArea.Enabled = False
         DisableControl btnAddExtraArea
@@ -562,7 +562,7 @@ End Sub
 Private Sub tbxExtraArea_Change()
 On Error GoTo Err_Handler
     
-    If Len(tbxExtraArea.Value) > 0 Then
+    If Len(tbxExtraArea.value) > 0 Then
         'enable the search "button"
         EnableControl btnAddExtraArea, CTRL_ADD_ENABLED, TEXT_ENABLED
         btnAddExtraArea.Enabled = True
@@ -601,7 +601,7 @@ End Sub
 Private Sub tbxExtraArea_LostFocus()
 On Error GoTo Err_Handler
     
-    If Len(tbxExtraArea.Value) > 0 Then
+    If Len(tbxExtraArea.value) > 0 Then
         'enable the search "button"
         btnAddExtraArea.Enabled = True
     Else
@@ -639,7 +639,7 @@ End Sub
 Private Sub tbxExtraArea_KeyUp(KeyCode As Integer, Shift As Integer)
 On Error GoTo Err_Handler
     
-    If Len(tbxExtraArea.Value) > 0 Then
+    If Len(tbxExtraArea.value) > 0 Then
         'enable the search "button"
          btnAddExtraArea.Enabled = True
         EnableControl btnAddExtraArea, lngLtLime, lngBlue, lngDkLime, lngBrtLime, lngLtGreen, lngDkGray, lngLtLime
@@ -679,8 +679,8 @@ Private Sub btnAddExtraArea_Click()
 On Error GoTo Err_Handler
     Dim strExtraArea As String
     
-    If ValidateString(tbxExtraArea.Value, "alphaspace") = True Then
-        strExtraArea = Trim(tbxExtraArea.Value)
+    If ValidateString(tbxExtraArea.value, "alphaspace") = True Then
+        strExtraArea = Trim(tbxExtraArea.value)
                 
         Dim rs As Recordset
     

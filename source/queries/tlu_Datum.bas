@@ -12,12 +12,12 @@ dbByte "RecordsetType" ="0"
 dbBoolean "OrderByOn" ="0"
 dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
-dbBinary "GUID" = Begin
-    0xcffbcec465136745b40c0848482cb11b
-End
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
 dbBoolean "TotalsRow" ="0"
+dbBinary "GUID" = Begin
+    0xe23405c572382d40bed254a9e7c71b6e
+End
 Begin
 End
 Begin
@@ -28,8 +28,8 @@ Begin
     Bottom =831
     Left =-1
     Top =-1
-    Right =1537
-    Bottom =437
+    Right =1543
+    Bottom =420
     Left =0
     Top =0
     ColumnsShown =539

@@ -3,28 +3,31 @@
     "Server, MSysObjects.Database AS CurrPath, tsys_Link_Dbs.File_path\015\012FROM ts"
     "ys_Link_Dbs INNER JOIN (MSysObjects INNER JOIN tsys_Link_Tables ON MSysObjects.N"
     "ame = tsys_Link_Tables.Link_table) ON tsys_Link_Dbs.Link_db = tsys_Link_Tables.L"
-    "ink_db\015\012WHERE (((MSysObjects.Type) In (4,6)) AND ((IIf([Type]=4,ParseConne"
-    "ctionStr([Connect]),ParseFileName([Database])))<>[tsys_Link_Tables].[Link_db])) "
-    "OR (((MSysObjects.Type) In (4,6)) AND ((IIf([Type]=4,ParseConnectionStr([Connect"
-    "],'SERVER=')))<>[Server])) OR (((MSysObjects.Type) In (4,6)) AND ((MSysObjects.D"
-    "atabase)<>[File_path])) OR (((MSysObjects.Type)=4) AND ((tsys_Link_Dbs.Is_ODBC)="
-    "False)) OR (((MSysObjects.Type)=6) AND ((tsys_Link_Dbs.Is_ODBC)=True)) OR (((IIf"
-    "([Type]=4,ParseConnectionStr([Connect],'SERVER='))) Is Null) AND ((tsys_Link_Dbs"
-    ".Server) Is Not Null)) OR (((IIf([Type]=4,ParseConnectionStr([Connect],'SERVER='"
-    "))) Is Not Null) AND ((tsys_Link_Dbs.Server) Is Null)) OR (((MSysObjects.Databas"
-    "e) Is Null) AND ((tsys_Link_Dbs.File_path) Is Not Null)) OR (((MSysObjects.Datab"
-    "ase) Is Not Null) AND ((tsys_Link_Dbs.File_path) Is Null));\015\012"
+    "ink_db\015\012WHERE MSysObjects.Type NOT IN (-32761,-32764,-32768)\015\012AND\015"
+    "\012(\015\012(((MSysObjects.Type) In (4,6)) And ((IIf([Type]=4,ParseConnectionSt"
+    "r([Connect]),ParseFileName([Database])))<> tsys_Link_Tables.Link_db)) \015\012Or"
+    " \015\012(((MSysObjects.Type) In (4,6)) And ((IIf([Type]=4,ParseConnectionStr([C"
+    "onnect],'SERVER=')))<>[Server])) \015\012Or \015\012(((MSysObjects.Type) In (4,6"
+    ")) And ((MSysObjects.Database)<>[File_path])) \015\012Or \015\012(((MSysObjects."
+    "Type)=4) And ((tsys_Link_Dbs.Is_ODBC)=False)) \015\012Or \015\012(((MSysObjects."
+    "Type)=6) And ((tsys_Link_Dbs.Is_ODBC)=True)) \015\012Or \015\012(((IIf([Type]=4,"
+    "ParseConnectionStr([Connect],'SERVER='))) Is Null) And ((tsys_Link_Dbs.Server) I"
+    "s Not Null)) \015\012Or \015\012(((IIf([Type]=4,ParseConnectionStr([Connect],'SE"
+    "RVER='))) Is Not Null) And ((tsys_Link_Dbs.Server) Is Null)) \015\012Or \015\012"
+    "(((MSysObjects.Database) Is Null) And ((tsys_Link_Dbs.File_path) Is Not Null)) \015"
+    "\012Or \015\012(((MSysObjects.Database) Is Not Null) And ((tsys_Link_Dbs.File_pa"
+    "th) Is Null))\015\012);\015\012"
 dbMemo "Connect" =""
 dbBoolean "ReturnsRecords" ="-1"
 dbInteger "ODBCTimeout" ="60"
 dbBoolean "OrderByOn" ="0"
 dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
-dbBinary "GUID" = Begin
-    0xe1f76eb6cb92684fb73761ab9b1a4c67
-End
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
+dbBinary "GUID" = Begin
+    0x2598e1adfbd05e44a677de8a57e0707f
+End
 Begin
     Begin
         dbText "Name" ="tsys_Link_Dbs.Is_ODBC"

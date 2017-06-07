@@ -14,16 +14,21 @@ Begin Form
     GridY =24
     DatasheetFontHeight =9
     ItemSuffix =14
-    Left =4080
-    Top =2145
-    Right =11025
-    Bottom =6270
+    Left =1545
+    Top =6135
+    Right =8745
+    Bottom =9720
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x3d34192b53bbe340
     End
     Caption ="Transect Count"
+    OnOpen ="[Event Procedure]"
     DatasheetFontName ="Arial"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
     AllowDatasheetView =0
     AllowPivotTableView =0
     AllowPivotChartView =0
@@ -71,14 +76,14 @@ Begin Form
                     Top =2580
                     Width =1350
                     Height =299
-                    Name ="ButtonClose"
+                    Name ="btnClose"
                     Caption ="Close Form"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
                 Begin ComboBox
                     OverlapFlags =85
@@ -123,6 +128,7 @@ Begin Form
                     RowSourceType ="Table/Query"
                     RowSource ="SELECT qry_sel_Infest_Year.Visit_Year FROM qry_sel_Infest_Year; "
                     ColumnWidths ="2820"
+                    AfterUpdate ="[Event Procedure]"
 
                     Begin
                         Begin Label
@@ -145,14 +151,14 @@ Begin Form
                     Width =1350
                     Height =300
                     TabIndex =3
-                    Name ="ButtonQuery"
+                    Name ="btnQuery"
                     Caption ="Run Query"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
             End
         End
@@ -164,32 +170,136 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Compare Database
+Option Explicit
 
-Private Sub ButtonClose_Click()
-On Error GoTo Err_ButtonClose_Click
+' =================================
+' MODULE:       frm_Select_Transect_Counts
+' Level:        Form module
+' Version:      1.01
+' Description:  Transect count related functions & subroutines
+'
+' Source/date:  Unknown
+' Adapted:      Bonnie Campbell, June 2017
+' Revisions:    Unknown        - 1.00 - initial version
+'               BLC, 5/10/2017 - 1.01 - documentation, added Form_Open(), Visit_Year_AfterUpdate()
+' =================================
 
+' ---------------------------------
+'  Methods
+' ---------------------------------
 
-    DoCmd.Close
+' ---------------------------------
+' SUB:          Form_Open
+' Description:  Form opening actions
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    BLC - 5/10/2017 - initial version
+' ---------------------------------
+Private Sub Form_Open(Cancel As Integer)
+On Error GoTo Err_Handler
 
-Exit_ButtonClose_Click:
+    'initialize (year & query button disabled until park selection)
+    Me.Visit_Year.Enabled = False
+    Me.btnQuery.Enabled = False
+
+Exit_Handler:
     Exit Sub
 
-Err_ButtonClose_Click:
-    MsgBox Err.Description
-    Resume Exit_ButtonClose_Click
-    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - Form_Open[frm_Select_Transect_Counts form])"
+    End Select
+    Resume Exit_Handler
 End Sub
 
-
+' ---------------------------------
+' SUB:          Park_Code_AfterUpdate
+' Description:  Sets park code/visit yeas filtering
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  -
+' Adapted:      Bonnie Campbell, May 2017 - initial version
+' Revisions:    Unknown         - initial version
+'               BLC - 5/10/2017 - added documentation, enabled Visit_Year
+' ---------------------------------
 Private Sub Park_Code_AfterUpdate()
+On Error GoTo Err_Handler
+
   If Not IsNull(Me!Park_Code) Then
-    Me!Visit_Year.RowSource = "SELECT DISTINCT Visit_Year FROM qry_Transect_Count WHERE [Unit_Code] = '" & Me!Park_Code & "' ORDER BY Visit_Year"
+    Me!Visit_Year.Enabled = True
+    Me!Visit_Year.RowSource = "SELECT DISTINCT Visit_Year FROM qry_sel_cover_Year WHERE [Unit_Code] = '" & Me!Park_Code & "' ORDER BY Visit_Year"
+    Me!Visit_Year = "" 'clear value
+    Me!btnQuery.Enabled = False
     Me.Refresh
   End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - Park_Code_AfterUpdate[frm_Select_Transect_Counts form])"
+    End Select
+    Resume Exit_Handler
 End Sub
 
-Private Sub ButtonQuery_Click()
-On Error GoTo Err_ButtonQuery_Click
+' ---------------------------------
+' SUB:          Visit_Year_AfterUpdate
+' Description:  Sets park code/visit yeas filtering
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    BLC - 5/11/2017 - initial version
+' ---------------------------------
+Private Sub Visit_Year_AfterUpdate()
+On Error GoTo Err_Handler
+
+  'default
+  Me!btnQuery.Enabled = False
+
+  If Not IsNull(Me!Visit_Year) Then
+    Me!btnQuery.Enabled = True
+  End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - Visit_Year_AfterUpdate[frm_Select_Transect_Counts form])"
+    End Select
+    Resume Exit_Handler
+End Sub
+
+' ---------------------------------
+' SUB:          btnQuery_Click
+' Description:  Runs query
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    JRB - unknown - initial version
+'               BLC - 6/6/2017 - added documentation, revised error handling, renamed button (ButtonX > btnX)
+' ---------------------------------
+Private Sub btnQuery_Click()
+On Error GoTo Err_Handler
 
     Dim stDocName As String
     
@@ -201,11 +311,43 @@ On Error GoTo Err_ButtonQuery_Click
     stDocName = "qry_Transect_Count_Param"
     DoCmd.OpenQuery stDocName, acNormal, acEdit
 
-Exit_ButtonQuery_Click:
+Exit_Handler:
     Exit Sub
 
-Err_ButtonQuery_Click:
-    MsgBox Err.Description
-    Resume Exit_ButtonQuery_Click
-    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - btnQuery_Click[frm_Select_Transect_Counts form])"
+    End Select
+    Resume Exit_Handler
+End Sub
+
+' ---------------------------------
+' SUB:          btnClose_Click
+' Description:  Closes form
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    JRB - unknown - initial version
+'               BLC - 6/6/2017 - added documentation, revised error handling, renamed button (ButtonX > btnX)
+' ---------------------------------
+Private Sub btnClose_Click()
+On Error GoTo Err_Handler
+
+    DoCmd.Close
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - btnClose_Click[frm_Select_Transect_Counts form])"
+    End Select
+    Resume Exit_Handler
 End Sub

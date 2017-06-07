@@ -1039,7 +1039,7 @@ Public Function fPathParsing(fullPath As String, PathFormat As String) As String
             'Seasonals
             '? fPathParsing("C:\work\Seasonals.xls", "E")
             '.xls
-Dim i As Integer, f As String, Found As Integer
+Dim i As Integer, f As String, found As Integer
 Dim DirName As String, FName As String, Ext As String
   
   fullPath = Trim$(fullPath)
@@ -1047,16 +1047,16 @@ Dim DirName As String, FName As String, Ext As String
 ' Get directory name
 '
   f = ""
-  Found = False
+  found = False
   For i = Len(fullPath) To 1 Step -1
     If Mid$(fullPath, i, 1) = "\" Then
       f = Mid$(fullPath, i + 1)
       DirName = Left$(fullPath, i)
-      Found = True
+      found = True
       Exit For
     End If
   Next i
-  If Not Found Then
+  If Not found Then
     f = fullPath
   End If
 '

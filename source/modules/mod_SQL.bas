@@ -4,7 +4,7 @@ Option Explicit
 ' =================================
 ' MODULE:       mod_SQL
 ' Level:        Framework module
-' VERSION:      1.03
+' VERSION:      1.04
 ' Description:  Database/SQL properties, functions & subroutines
 '
 ' Source/date:  Bonnie Campbell, 7/24/2014
@@ -12,6 +12,7 @@ Option Explicit
 '               BLC, 8/19/2014 - 1.01 - added versioning
 '               BLC, 5/26/2015 - 1.02 - added mod_db_Templates subs/functions - GetQuerySQL, GetSQLDbTemplate
 '               BLC, 6/30/2015 - 1.03 - combined GetDbQuerySQL with GetQuerySQL, renamed get... to Get... functions
+'               BLC, 5/10/2017 - 1.04 - revised for Exit_Handler vs. Exit_Procedure in GetSQLTemplate()
 ' =================================
 
 ' ---------------------------------
@@ -201,13 +202,14 @@ End Function
 ' Source/date:  Bonnie Campbell, June 2014
 ' Revisions:    BLC, 6/16/2014 - initial version
 '               BLC, 5/26/2015 - moved from mod_db_Templates to mod_SQL, added error handling
+'               BLC, 5/10/2017 - revised GoTo Exit_Procedure to Exit_Handler
 ' ---------------------------------
 Public Sub GetSQLTemplates(Optional strVersion As String = "")
 On Error GoTo Err_Handler
 
     Dim db As DAO.Database
     Dim rst As DAO.Recordset
-    Dim strSQL As String, strSQLWhere As String, key As String, Value As String
+    Dim strSQL As String, strSQLWhere As String, key As String, value As String
     
     'handle default
     strSQLWhere = " WHERE Is_Supported > 0"
@@ -227,7 +229,7 @@ On Error GoTo Err_Handler
         MsgBox "Sorry, no templates were found for this database version.", vbExclamation, _
             "Linked Database Templates Not Found"
         DoCmd.CancelEvent
-        GoTo Exit_Procedure
+        GoTo Exit_Handler
     End If
     
     'prepare dictionary
@@ -247,12 +249,12 @@ On Error GoTo Err_Handler
         For i = 1 To UBound(ary)
             key = ary(i)
             If (ary(i) = "SQLstring") Then
-                Value = rst!template
+                value = rst!Template
             Else
-                Value = rst.Fields(ary(i))
+                value = rst.Fields(ary(i))
             End If
             If Not dict.Exists(key) Then
-                dict.Add key, Value
+                dict.Add key, value
             End If
         Next
         rst.MoveNext
@@ -263,7 +265,7 @@ On Error GoTo Err_Handler
     'cleanup
     Set dict = Nothing
     
-Exit_Sub:
+Exit_Handler:
     Exit Sub
 
 Err_Handler:
@@ -272,7 +274,7 @@ Err_Handler:
         MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
             "Error encountered (#" & Err.Number & " - GetSQLTemplates[mod_SQL])"
     End Select
-    Resume Exit_Sub
+    Resume Exit_Handler
 End Sub
 
 ' ---------------------------------
@@ -411,7 +413,7 @@ On Error GoTo Err_Handler
     Do While Not rs.EOF
         If bIsMultiValue Then
             'For multi-valued field, loop through the values
-            Set rsMV = rs(0).Value
+            Set rsMV = rs(0).value
             Do While Not rsMV.EOF
                 If Not IsNull(rsMV(0)) Then
                     strOut = strOut & rsMV(0) & strSeparator

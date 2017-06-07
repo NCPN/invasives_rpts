@@ -12,7 +12,7 @@ dbBoolean "UseTransaction" ="-1"
 dbBoolean "FailOnError" ="0"
 dbByte "Orientation" ="0"
 dbBinary "GUID" = Begin
-    0x8dbd82ffa573b84c9da50c718b3ae08a
+    0x0b228eeb9d20a34caaaa33bb51f8baad
 End
 Begin
 End
@@ -24,8 +24,8 @@ Begin
     Bottom =327
     Left =-1
     Top =-1
-    Right =946
-    Bottom =123
+    Right =952
+    Bottom =106
     Left =0
     Top =0
     ColumnsShown =771

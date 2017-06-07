@@ -24,11 +24,11 @@ dbByte "RecordsetType" ="0"
 dbBoolean "OrderByOn" ="0"
 dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
-dbBinary "GUID" = Begin
-    0x5fe26818f9b0134d97c17faba6d2cd65
-End
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
+dbBinary "GUID" = Begin
+    0x03737f0cad4cf04d9f03d25b747dd2d6
+End
 Begin
     Begin
         dbText "Name" ="tbl_Locations.Unit_Code"
@@ -36,14 +36,48 @@ Begin
     End
     Begin
         dbText "Name" ="Visit_Year"
+        dbLong "AggregateType" ="-1"
         dbBinary "GUID" = Begin
             0xf372aaa339e5d2458963cbfabfc1a44a
         End
     End
     Begin
         dbText "Name" ="Species"
+        dbLong "AggregateType" ="-1"
         dbBinary "GUID" = Begin
             0xe8849d7745928b4b84ba2e9754b5da1c
         End
+    End
+    Begin
+        dbText "Name" ="tbl_Locations.Plot_ID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="tlu_NCPN_Plants.Master_Common_Name"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="tbl_Infestation.Pulled"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="tbl_Infestation.Growth_Stage"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="tbl_Infestation.N_Coord"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="tbl_Infestation.E_Coord"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="tlu_Cover_Class.Cover_Class"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="tlu_Size_Class.Size_Class"
+        dbLong "AggregateType" ="-1"
     End
 End

@@ -4,7 +4,7 @@ Option Explicit
 ' =================================
 ' MODULE:       mod_User
 ' Level:        Framework module
-' Version:      1.04
+' Version:      1.06
 ' Description:  Access related functions & subroutines
 '
 ' Source/date:  Bonnie Campbell, May 2014
@@ -15,6 +15,7 @@ Option Explicit
 '               BLC, 5/18/2015 - 1.03 - removed fxn prefixes
 '               BLC, 6/12/2015 - 1.04 - replaced TempVars.item(... with TempVars("...
 '               BLC, 6/30/2015 - 1.05 - updated cmd button prefixes to btn
+'               BLC, 6/6/2017  - 1.06 - revised UserName() to accommodate TestUser
 ' =================================
 
 ' ---------------------------------
@@ -647,12 +648,13 @@ End Sub
 ' Revisions:    JRB, 12/31/2009 - initial version
 '               BLC, 4/30/2015  - moved from mod_Utilities
 '               BLC, 5/18/2015 - renamed, removed fxn prefix
+'               BLC, 6/6/2017  - revised to accommodate testing user
 ' =================================
 Public Function UserName() As String
     On Error GoTo Err_Handler
 
     UserName = "Unknown"
-    UserName = Environ("Username")
+    UserName = IIf(DEV_MODE, "TestUser", Environ("Username"))
 
 Exit_Procedure:
     Exit Function

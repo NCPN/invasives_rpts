@@ -199,10 +199,10 @@ Begin Form
                     PressedForeColor =6750156
                     PressedForeThemeColorIndex =-1
                     PressedForeTint =100.0
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ListBox
@@ -223,7 +223,7 @@ Begin Form
                     RowSourceType ="Table/Query"
                     RowSource ="SELECT DISTINCT tbl_Target_List.Park_Code, tbl_Target_List.Target_Year, tbl_Targ"
                         "et_List.Park_Code & \"-\" & tbl_Target_List.Target_Year AS ParkYear FROM tbl_Tar"
-                        "get_List ORDER BY tbl_Target_List.[Park_Code], tbl_Target_List.[Target_Year];"
+                        "get_List ORDER BY tbl_Target_List.[Park_Code], tbl_Target_List.[Target_Year]; "
                     ColumnWidths ="0;0;1440"
                     OnClick ="[Event Procedure]"
                     GridlineColor =10921638

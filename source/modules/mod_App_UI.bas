@@ -354,7 +354,7 @@ On Error GoTo Err_Handler
             frm.Controls("cbxWY").DefaultValue = False
             frm.Controls("cbxITIS").DefaultValue = False
             frm.Controls("cbxCommon").DefaultValue = False
-            frm.Controls("tbxSearchFor").Value = ""
+            frm.Controls("tbxSearchFor").value = ""
     End Select
     
 Exit_Sub:

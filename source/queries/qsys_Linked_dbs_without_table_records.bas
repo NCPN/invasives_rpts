@@ -10,12 +10,12 @@ dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
 dbText "Description" ="Records in tsys_Link_Dbs that do not have any related child records in tsys_Link"
     "_Tables"
-dbBinary "GUID" = Begin
-    0x17c9f3e1e976ed4a8b1214e515bbd4ab
-End
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
 dbBoolean "TotalsRow" ="0"
+dbBinary "GUID" = Begin
+    0xeac384cf7d0ce049855007f577b82e8e
+End
 Begin
     Begin
         dbText "Name" ="tsys_Link_Dbs.Link_db"
@@ -61,6 +61,10 @@ Begin
     End
     Begin
         dbText "Name" ="tsys_Link_Dbs.Sort_order"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="tsys_Link_Dbs.Link_type"
         dbLong "AggregateType" ="-1"
     End
 End

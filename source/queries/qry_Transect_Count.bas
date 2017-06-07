@@ -1,38 +1,11 @@
-﻿Operation =1
-Option =0
-Having ="(((Year([Start_Date])) Is Not Null))"
-Begin InputTables
-    Name ="tbl_Locations"
-    Name ="tbl_Events"
-    Name ="tbl_Quadrat_Transect"
-End
-Begin OutputColumns
-    Expression ="tbl_Locations.Unit_Code"
-    Alias ="Route"
-    Expression ="tbl_Locations.Plot_ID"
-    Alias ="Visit_Year"
-    Expression ="Year([Start_Date])"
-    Alias ="CountOfTransect"
-    Expression ="Count(tbl_Quadrat_Transect.Transect)"
-End
-Begin Joins
-    LeftTable ="tbl_Events"
-    RightTable ="tbl_Quadrat_Transect"
-    Expression ="tbl_Events.Event_ID = tbl_Quadrat_Transect.Event_ID"
-    Flag =2
-    LeftTable ="tbl_Locations"
-    RightTable ="tbl_Events"
-    Expression ="tbl_Locations.Location_ID = tbl_Events.Location_ID"
-    Flag =2
-End
-Begin Groups
-    Expression ="tbl_Locations.Unit_Code"
-    GroupLevel =0
-    Expression ="tbl_Locations.Plot_ID"
-    GroupLevel =0
-    Expression ="Year([Start_Date])"
-    GroupLevel =0
-End
+﻿dbMemo "SQL" ="SELECT tbl_Locations.Unit_Code, tbl_Locations.Plot_ID AS Route, Year([Start_Date"
+    "]) AS Visit_Year, Count(tbl_Quadrat_Transect.Transect) AS CountOfTransect\015\012"
+    "FROM tbl_Locations LEFT JOIN (tbl_Events LEFT JOIN tbl_Quadrat_Transect ON tbl_E"
+    "vents.Event_ID = tbl_Quadrat_Transect.Event_ID) ON tbl_Locations.Location_ID = t"
+    "bl_Events.Location_ID\015\012GROUP BY tbl_Locations.Unit_Code, tbl_Locations.Plo"
+    "t_ID, Year([Start_Date])\015\012HAVING (((Year([Start_Date])) Is Not Null));\015"
+    "\012"
+dbMemo "Connect" =""
 dbBoolean "ReturnsRecords" ="-1"
 dbInteger "ODBCTimeout" ="60"
 dbByte "RecordsetType" ="0"
@@ -40,53 +13,36 @@ dbBoolean "OrderByOn" ="0"
 dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
 dbBinary "GUID" = Begin
-    0xe2885d7f473b604fb3af6ca73fa9269d
+    0xca9176a4e4857145bfe449ba42c9e3ac
 End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
 Begin
     Begin
         dbText "Name" ="CountOfTransect"
         dbInteger "ColumnWidth" ="1740"
         dbBoolean "ColumnHidden" ="0"
-    End
-End
-Begin
-    State =0
-    Left =18
-    Top =40
-    Right =1417
-    Bottom =364
-    Left =-1
-    Top =-1
-    Right =1380
-    Bottom =144
-    Left =0
-    Top =0
-    ColumnsShown =543
-    Begin
-        Left =38
-        Top =6
-        Right =134
-        Bottom =124
-        Top =1
-        Name ="tbl_Locations"
-        Name =""
+        dbLong "AggregateType" ="-1"
+        dbBinary "GUID" = Begin
+            0x860897a6b5e2734d8d6010b07a63514d
+        End
     End
     Begin
-        Left =172
-        Top =6
-        Right =268
-        Bottom =124
-        Top =0
-        Name ="tbl_Events"
-        Name =""
+        dbText "Name" ="Route"
+        dbLong "AggregateType" ="-1"
+        dbBinary "GUID" = Begin
+            0x7fa13a3c5701f24e90bda00c2766ae22
+        End
     End
     Begin
-        Left =306
-        Top =6
-        Right =402
-        Bottom =124
-        Top =0
-        Name ="tbl_Quadrat_Transect"
-        Name =""
+        dbText "Name" ="Visit_Year"
+        dbLong "AggregateType" ="-1"
+        dbBinary "GUID" = Begin
+            0xe557aa9a712c1645aedf4df4b664f416
+        End
+    End
+    Begin
+        dbText "Name" ="tbl_Locations.Unit_Code"
+        dbLong "AggregateType" ="-1"
     End
 End

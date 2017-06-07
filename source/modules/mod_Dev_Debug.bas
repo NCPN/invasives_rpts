@@ -4,13 +4,14 @@ Option Explicit
 ' =================================
 ' MODULE:       mod_Dev_Debug
 ' Level:        Development module
-' Version:      1.01
+' Version:      1.02
 '
 ' Description:  Debugging related functions & procedures for version control
 '
 ' Source/date:  Bonnie Campbell, 2/12/2015
 ' Revisions:    BLC - 5/27/2015 - 1.00 - initial version
 '               BLC - 7/7/2015  - 1.01 - added GetErrorTrappingOption()
+'               BLC - 4/6/2017 - 1.02 - added SearchQueries(), SearchDB()
 ' =================================
 
 ' ===================================================================================
@@ -47,7 +48,7 @@ On Error GoTo Err_Handler
     Dim tdf As DAO.TableDef
 
     Set db = CurrentDb()
-    Set tdf = db.TableDefs(TableName)
+    Set tdf = db.TableDefs(strTable)
 
     'Change the connect value
     tdf.Connect = strConn '"ODBC;DATABASE=pubs;UID=sa;PWD=;DSN=Publishers"
@@ -233,6 +234,8 @@ Public Sub DebugTest()
 On Error GoTo Err_Handler
 
     Dim strDbPath As String, strDb As String
+    Dim i As Integer
+    
 
     'invasives be
 '    strDbPath = "C:\___TEST_DATA\test\Invasives_be.accdb"
@@ -313,3 +316,251 @@ Err_Handler:
     End Select
     Resume Exit_Function
 End Function
+
+' ---------------------------------
+' FUNCTION:     SearchQueries
+' Description:  Determine which queries contain a certain text value
+' Assumptions:  -
+' Parameters:   SearchText - text to find in the query (string)
+'               ShowSQL - show the query SQL (boolean, false = default)
+'               QryName - query to search (string, default = * which includes all queries)
+' Returns:      Debug.Print's the name of each query that contains the text.
+' Throws:       none
+' References:   -
+' Source/date:  mwolfe02, October 20, 2011
+'               http://stackoverflow.com/questions/7831071/how-to-find-all-queries-related-to-table-in-ms-access
+' Adapted:      Bonnie Campbell, April 6, 2017 - for NCPN tools
+' Revisions:
+'   BLC - 4/6/2017 - initial version
+' ---------------------------------
+Sub SearchQueries(SearchText As String, _
+                  Optional ShowSQL As Boolean = False, _
+                  Optional QryName As String = "*")
+On Error GoTo Err_Handler
+    
+    Dim QDef As QueryDef
+
+    For Each QDef In CurrentDb.QueryDefs
+        If QDef.name Like QryName Then
+            If InStr(QDef.sql, SearchText) > 0 Then
+                Debug.Print QDef.name
+                If ShowSQL Then Debug.Print QDef.sql & vbCrLf
+            End If
+        End If
+    Next QDef
+
+Exit_Handler:
+    Exit Sub
+    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - SearchQueries[mod_Dev_Debug])"
+    End Select
+    Resume Exit_Handler
+End Sub
+
+' ---------------------------------
+' FUNCTION:     SearchDB
+' Description:  Determine which objects contain a certain text value
+' Assumptions:  -
+' Parameters:   SearchText - text to find (string)
+'               ObjType - type(s) of objects to check (AcObjectType, acDefault = default)
+'               ObjName - name of object to search (string, default = * which includes all objects)
+' Returns:      Debug.Print's the name of each object that contains the text.
+' Throws:       none
+' References:   -
+' Source/date:  mwolfe02, October 20, 2011
+'               http://stackoverflow.com/questions/7831071/how-to-find-all-queries-related-to-table-in-ms-access
+' Adapted:      Bonnie Campbell, April 6, 2017 - for NCPN tools
+' Revisions:
+'   MW  - 10/20/200x - initial version
+'   MW  - 1/19/2009  - limited search by object name pattern
+'   BLC - 4/6/2017   - initial version for NCPN tools, added casing
+' ---------------------------------
+Sub SearchDB(SearchText As String, _
+             Optional ObjType As AcObjectType = acDefault, _
+             Optional ObjName As String = "*")
+On Error GoTo Err_Handler
+
+    Dim db As Database, obj As AccessObject, ctl As Control, prop As Property
+    Dim frm As Form, rpt As Report, mdl As Module
+    Dim oLoaded As Boolean, found As Boolean, instances As Long
+    Dim sline As Long, scol As Long, eline As Long, ecol As Long
+    Dim ary() As Variant, oType As Variant
+
+    Set db = CurrentDb
+    Application.Echo False
+
+    'set array
+    If acDefault Then
+        'do for all
+        ary = Array(acQuery, acForm, acMacro, acModule, acReport)
+    Else
+        ary = Array(ObjType)
+    End If
+    
+    'iterate
+    For Each oType In ary
+        
+        'search object types
+        Select Case oType
+            '------- Queries ----------
+            Case acQuery
+                Debug.Print "Queries:"
+                SearchQueries SearchText, False, ObjName
+                Debug.Print vbCrLf
+    
+            '------- Forms ----------
+            Case acForm
+                Debug.Print "Forms:"
+                On Error Resume Next
+                For Each obj In CurrentProject.AllForms
+                    If obj.name Like ObjName Then
+                        oLoaded = obj.IsLoaded
+                        If Not oLoaded Then DoCmd.OpenForm obj.name, acDesign, , , , acHidden
+                        Set frm = Application.Forms(obj.name)
+                        For Each prop In frm.Properties
+                            Err.Clear
+                            If InStr(prop.value, SearchText) > 0 Then
+                                If Err.Number = 0 Then
+                                    Debug.Print "Form: " & frm.name & _
+                                                "  Property: " & prop.name & _
+                                                "  Value: " & prop.value
+                                End If
+                            End If
+                        Next prop
+                        If frm.HasModule Then
+                            sline = 0: scol = 0: eline = 0: ecol = 0: instances = 0
+                            found = frm.Module.Find(SearchText, sline, scol, eline, ecol)
+                            Do Until Not found
+                                instances = instances + 1
+                                sline = eline + 1: scol = 0: eline = 0: ecol = 0
+                                found = frm.Module.Find(SearchText, sline, scol, eline, ecol)
+                            Loop
+                            If instances > 0 Then Debug.Print "Form: " & frm.name & _
+                               "  Module: " & instances & " instances"
+        
+                        End If
+                        For Each ctl In frm.Controls
+                            For Each prop In ctl.Properties
+                                Err.Clear
+                                If InStr(prop.value, SearchText) > 0 Then
+                                    If Err.Number = 0 Then
+                                        Debug.Print "Form: " & frm.name & _
+                                                    "  Control: " & ctl.name & _
+                                                    "  Property: " & prop.name & _
+                                                    "  Value: " & prop.value
+                                    End If
+                                End If
+                            Next prop
+                        Next ctl
+                        Set frm = Nothing
+                        If Not oLoaded Then DoCmd.Close acForm, obj.name, acSaveNo
+                        DoEvents
+                    End If
+                Next obj
+                On Error GoTo Err_Handler
+                Debug.Print vbCrLf
+    
+            '------- Modules ----------
+            Case acModule
+                Debug.Print "Modules:"
+                For Each obj In CurrentProject.AllModules
+                    If obj.name Like ObjName Then
+                        oLoaded = obj.IsLoaded
+                        If Not oLoaded Then DoCmd.OpenModule obj.name
+                        Set mdl = Application.Modules(obj.name)
+                        sline = 0: scol = 0: eline = 0: ecol = 0: instances = 0
+                        found = mdl.Find(SearchText, sline, scol, eline, ecol)
+                        Do Until Not found
+                            instances = instances + 1
+                            sline = eline + 1: scol = 0: eline = 0: ecol = 0
+                            found = mdl.Find(SearchText, sline, scol, eline, ecol)
+                        Loop
+                        If instances > 0 Then Debug.Print obj.name & ": " & instances & " instances"
+                        Set mdl = Nothing
+                        If Not oLoaded Then DoCmd.Close acModule, obj.name
+                    End If
+                Next obj
+                Debug.Print vbCrLf
+    
+            '------- Macros ----------
+            Case acMacro
+                'Debug.Print "Macros:"
+                'Debug.Print vbCrLf
+    
+            '------- Reports ----------
+            Case acReport
+                Debug.Print "Reports:"
+                On Error Resume Next
+                For Each obj In CurrentProject.AllReports
+                    If obj.name Like ObjName Then
+                        oLoaded = obj.IsLoaded
+                        If Not oLoaded Then DoCmd.OpenReport obj.name, acDesign
+                        Set rpt = Application.Reports(obj.name)
+                        For Each prop In rpt.Properties
+                            Err.Clear
+                            If InStr(prop.value, SearchText) > 0 Then
+                                If Err.Number = 0 Then
+                                    Debug.Print "Report: " & rpt.name & _
+                                                "  Property: " & prop.name & _
+                                                "  Value: " & prop.value
+                                End If
+                            End If
+                        Next prop
+                        If rpt.HasModule Then
+                            sline = 0: scol = 0: eline = 0: ecol = 0: instances = 0
+                            found = rpt.Module.Find(SearchText, sline, scol, eline, ecol)
+                            Do Until Not found
+                                instances = instances + 1
+                                sline = eline + 1: scol = 0: eline = 0: ecol = 0
+                                found = rpt.Module.Find(SearchText, sline, scol, eline, ecol)
+                            Loop
+                            If instances > 0 Then Debug.Print "Report: " & rpt.name & _
+                               "  Module: " & instances & " instances"
+        
+                        End If
+                        For Each ctl In rpt.Controls
+                            For Each prop In ctl.Properties
+                                If InStr(prop.value, SearchText) > 0 Then
+                                    Debug.Print "Report: " & rpt.name & _
+                                                "  Control: " & ctl.name & _
+                                                "  Property: " & prop.name & _
+                                                "  Value: " & prop.value
+                                End If
+                            Next prop
+                        Next ctl
+                        Set rpt = Nothing
+                        If Not oLoaded Then DoCmd.Close acReport, obj.name, acSaveNo
+                        DoEvents
+                    End If
+                Next obj
+                On Error GoTo Err_Handler
+                Debug.Print vbCrLf
+        
+        End Select
+    
+    Next
+
+Exit_Handler:
+    Application.Echo True
+    Exit Sub
+    
+Err_Handler:
+    Application.Echo True
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - SearchDB[mod_Dev_Debug])"
+    End Select
+    Debug.Assert False
+    Resume Exit_Handler
+End Sub
+
+Public Sub runtest()
+    'SearchDB "tbl_Quadrat_Species"
+    'SearchDB "tbl_Quadrat_Transect"
+    SearchDB "qry_Transect_Select"
+End Sub

@@ -1157,7 +1157,7 @@ End Sub
 Private Sub tbxSearchFor_LostFocus()
 On Error GoTo Err_Handler
     
-    If Len(tbxSearchFor.Value) > 0 Then
+    If Len(tbxSearchFor.value) > 0 Then
         'check if species list is identified
         If Len(TempVars("speciestype")) > 0 Then
             'enable the search "button"
@@ -1580,7 +1580,7 @@ On Error GoTo Err_Handler
     'ignore if disabled
     If btnSearch.Enabled = False Then GoTo Exit_Sub
 
-    strSearch = Trim(tbxSearchFor.Value)
+    strSearch = Trim(tbxSearchFor.value)
             
     'check strSearch is alpha numeric
     

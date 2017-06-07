@@ -103,11 +103,10 @@ Begin Form
                     Top =1080
                     Width =2520
                     TabIndex =1
-                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"10\""
                     Name ="lbxPark"
                     RowSourceType ="Table/Query"
                     RowSource ="SELECT DISTINCT tlu_Parks.ParkCode, tlu_Parks.ParkName FROM tlu_Parks INNER JOIN"
-                        " tbl_EDSW ON tbl_EDSW.Unit_Code = tlu_Parks.ParkCode;"
+                        " tbl_EDSW ON tbl_EDSW.Unit_Code = tlu_Parks.ParkCode; "
                     ColumnWidths ="576;2592"
                     AfterUpdate ="[Event Procedure]"
 
@@ -142,11 +141,10 @@ Begin Form
                     Top =1680
                     Width =1200
                     TabIndex =2
-                    ColumnInfo ="\"\";\"\";\"3\";\"2\""
                     Name ="lbxYear"
                     RowSourceType ="Table/Query"
                     RowSource ="SELECT DISTINCT Year(GPS_Date) FROM tbl_EDSW WHERE [Unit_Code] = 'CURE' ORDER BY"
-                        " Year(GPS_Date)"
+                        " Year(GPS_Date); "
                     ColumnWidths ="2820"
 
                     LayoutCachedLeft =2040

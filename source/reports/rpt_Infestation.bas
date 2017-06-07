@@ -2,7 +2,6 @@
 VersionRequired =20
 Begin Report
     LayoutForPrint = NotDefault
-    FilterOn = NotDefault
     AllowDesignChanges = NotDefault
     DefaultView =0
     TabularFamily =126

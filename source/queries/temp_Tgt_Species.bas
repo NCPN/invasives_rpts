@@ -8,5 +8,31 @@
 dbMemo "Connect" =""
 dbBoolean "ReturnsRecords" ="-1"
 dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xfb502d81d0b8f645ad65e75caf0d298d
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
 Begin
+    Begin
+        dbText "Name" ="Park"
+        dbBinary "GUID" = Begin
+            0xd39ff39af6e2914eb7a1449f725cc67e
+        End
+    End
+    Begin
+        dbText "Name" ="TgtYear"
+        dbBinary "GUID" = Begin
+            0xd7a049a4a2b81d44b8fbc2f1a5639bb7
+        End
+    End
+    Begin
+        dbText "Name" ="Extra_Area_ID"
+        dbBinary "GUID" = Begin
+            0xfd65da8edd231145aa4aa9cd353609fb
+        End
+    End
 End

@@ -5,11 +5,11 @@ dbInteger "ODBCTimeout" ="60"
 dbBoolean "OrderByOn" ="0"
 dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
-dbBinary "GUID" = Begin
-    0x2e26420b5166064c8ca47e87c48f306b
-End
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
+dbBinary "GUID" = Begin
+    0x13072bf5167a724d921bdfdaaa3e0c1d
+End
 Begin
     Begin
         dbText "Name" ="qry_EDSW_by_Park.tbl_EDSW.Unit_Code"

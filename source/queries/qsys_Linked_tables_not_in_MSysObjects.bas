@@ -1,27 +1,9 @@
-﻿Operation =1
-Option =0
-Where ="(((MSysObjects.Name) Is Null))"
-Begin InputTables
-    Name ="MSysObjects"
-    Name ="tsys_Link_Tables"
-    Name ="tsys_Link_Dbs"
-End
-Begin OutputColumns
-    Expression ="tsys_Link_Tables.Link_table"
-    Expression ="tsys_Link_Tables.Link_db"
-    Expression ="tsys_Link_Dbs.Server"
-    Expression ="tsys_Link_Dbs.File_path"
-End
-Begin Joins
-    LeftTable ="MSysObjects"
-    RightTable ="tsys_Link_Tables"
-    Expression ="MSysObjects.Name = tsys_Link_Tables.Link_table"
-    Flag =3
-    LeftTable ="tsys_Link_Dbs"
-    RightTable ="tsys_Link_Tables"
-    Expression ="tsys_Link_Dbs.Link_db = tsys_Link_Tables.Link_db"
-    Flag =1
-End
+﻿dbMemo "SQL" ="SELECT tsys_Link_Tables.Link_table, tsys_Link_Tables.Link_db, tsys_Link_Dbs.Serv"
+    "er, tsys_Link_Dbs.File_path\015\012FROM tsys_Link_Dbs INNER JOIN (MSysObjects RI"
+    "GHT JOIN tsys_Link_Tables ON MSysObjects.Name = tsys_Link_Tables.Link_table) ON "
+    "tsys_Link_Dbs.Link_db = tsys_Link_Tables.Link_db\015\012WHERE (((MSysObjects.Nam"
+    "e) Is Null));\015\012"
+dbMemo "Connect" =""
 dbBoolean "ReturnsRecords" ="-1"
 dbInteger "ODBCTimeout" ="60"
 dbByte "RecordsetType" ="0"
@@ -29,52 +11,27 @@ dbBoolean "OrderByOn" ="0"
 dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
 dbText "Description" ="Linked table records in tsys_Link_Tables that are not actually in the database"
-dbBinary "GUID" = Begin
-    0x1a459581345955409cd444a8e20a1d61
-End
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
 dbBoolean "TotalsRow" ="0"
-Begin
+dbBinary "GUID" = Begin
+    0xc914d08af70bbd47a88765e95921f5ef
 End
 Begin
-    State =0
-    Left =0
-    Top =40
-    Right =978
-    Bottom =649
-    Left =-1
-    Top =-1
-    Right =940
-    Bottom =123
-    Left =0
-    Top =0
-    ColumnsShown =539
     Begin
-        Left =38
-        Top =6
-        Right =134
-        Bottom =113
-        Top =0
-        Name ="MSysObjects"
-        Name =""
+        dbText "Name" ="tsys_Link_Tables.Link_table"
+        dbLong "AggregateType" ="-1"
     End
     Begin
-        Left =172
-        Top =6
-        Right =268
-        Bottom =113
-        Top =0
-        Name ="tsys_Link_Tables"
-        Name =""
+        dbText "Name" ="tsys_Link_Tables.Link_db"
+        dbLong "AggregateType" ="-1"
     End
     Begin
-        Left =306
-        Top =6
-        Right =402
-        Bottom =113
-        Top =0
-        Name ="tsys_Link_Dbs"
-        Name =""
+        dbText "Name" ="tsys_Link_Dbs.Server"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="tsys_Link_Dbs.File_path"
+        dbLong "AggregateType" ="-1"
     End
 End

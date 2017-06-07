@@ -14,16 +14,16 @@ dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
 dbText "Description" ="Linked tables in MSysObjects that do not have records in tsys_Link_Tables (other"
     " than recently deleted objects that start with '~')"
-dbBinary "GUID" = Begin
-    0xdd820664635c7845b82eb1fc58c489f5
-End
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
 dbBoolean "TotalsRow" ="0"
+dbBinary "GUID" = Begin
+    0x4cec6e00241c6f00e4aac72f02000000
+End
 Begin
     Begin
         dbText "Name" ="CurrDb"
-        dbInteger "ColumnWidth" ="2430"
+        dbInteger "ColumnWidth" ="3315"
         dbBoolean "ColumnHidden" ="0"
         dbLong "AggregateType" ="-1"
         dbBinary "GUID" = Begin
@@ -41,7 +41,7 @@ Begin
     End
     Begin
         dbText "Name" ="CurrPath"
-        dbInteger "ColumnWidth" ="9285"
+        dbInteger "ColumnWidth" ="5400"
         dbBoolean "ColumnHidden" ="0"
         dbLong "AggregateType" ="-1"
         dbBinary "GUID" = Begin
@@ -50,7 +50,7 @@ Begin
     End
     Begin
         dbText "Name" ="CurrTable"
-        dbInteger "ColumnWidth" ="2505"
+        dbInteger "ColumnWidth" ="3360"
         dbBoolean "ColumnHidden" ="0"
         dbLong "AggregateType" ="-1"
         dbBinary "GUID" = Begin

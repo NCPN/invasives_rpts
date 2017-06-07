@@ -182,10 +182,10 @@ Begin Form
                     PressedForeColor =6750156
                     PressedForeThemeColorIndex =-1
                     PressedForeTint =100.0
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                     Overlaps =1
                 End
                 Begin ComboBox
@@ -202,12 +202,11 @@ Begin Form
                     TabIndex =1
                     BorderColor =10921638
                     ForeColor =4138256
-                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"10\""
                     Name ="cbxPark"
                     RowSourceType ="Table/Query"
                     RowSource ="SELECT tlu_Parks.ParkCode, tlu_Parks.ParkName FROM tlu_Parks WHERE tlu_Parks.Par"
                         "kCode IN ('BLCA','CARE','COLM','CURE','DINO','FOBU','GOSP','ZION') ORDER BY tlu_"
-                        "Parks.[ParkName];"
+                        "Parks.[ParkName]; "
                     ColumnWidths ="1080;3960"
                     OnChange ="[Event Procedure]"
                     ControlTipText ="Choose a park."
@@ -354,7 +353,7 @@ On Error GoTo Err_Handler
     Next
     
     cbxYear.RowSource = strValueList
-    cbxYear.Value = "SEL"
+    cbxYear.value = "SEL"
 
     'disable continue to start
     btnContinue.Enabled = False
@@ -390,9 +389,9 @@ Private Sub cbxPark_Change()
 On Error GoTo Err_Handler
     
     'set park & enable continue when a 4-letter park code is selected
-    If Len(cbxPark.Value) > 3 Then
+    If Len(cbxPark.value) > 3 Then
         'set park
-        TempVars("park") = Trim(cbxPark.Value)
+        TempVars("park") = Trim(cbxPark.value)
         
         'enable the continue button
         If Len(cbxPark) > 3 And TempVars("TgtYear") > 0 Then
@@ -430,7 +429,7 @@ On Error GoTo Err_Handler
 
     If Len(Trim(cbxYear)) > 0 Then
         'set year
-        TempVars("TgtYear") = cbxYear.Value
+        TempVars("TgtYear") = cbxYear.value
         
         'enable the continue button
         If Len(cbxPark) > 3 And TempVars("TgtYear") > 0 Then
@@ -474,8 +473,8 @@ Private Sub btnContinue_Click()
 On Error GoTo Err_Handler
        
     'clear year & park (prevents NULL errors & click continue if values aren't set)
-    cbxYear.Value = "SEL"
-    cbxPark.Value = ""
+    cbxYear.value = "SEL"
+    cbxPark.value = ""
        
     'open target species list
     DoCmd.OpenForm "frm_Tgt_Species", acNormal, , , , , TempVars("TgtYear")

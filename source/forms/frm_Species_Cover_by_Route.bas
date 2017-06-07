@@ -14,16 +14,21 @@ Begin Form
     GridY =24
     DatasheetFontHeight =9
     ItemSuffix =13
-    Left =4110
-    Top =180
-    Right =11310
-    Bottom =3765
+    Left =2580
+    Top =7275
+    Right =9705
+    Bottom =10860
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x3d34192b53bbe340
     End
     Caption ="Species Cover"
+    OnOpen ="[Event Procedure]"
     DatasheetFontName ="Arial"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
     AllowDatasheetView =0
     AllowPivotTableView =0
     AllowPivotChartView =0
@@ -62,7 +67,7 @@ Begin Form
                     Height =420
                     FontSize =16
                     FontWeight =700
-                    Name ="Label3"
+                    Name ="lblHeader"
                     Caption ="Species Cover by Route"
                 End
                 Begin CommandButton
@@ -71,14 +76,14 @@ Begin Form
                     Top =2580
                     Width =1350
                     Height =299
-                    Name ="ButtonClose"
+                    Name ="btnClose"
                     Caption ="Close Form"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
                 Begin ComboBox
                     OverlapFlags =85
@@ -121,8 +126,13 @@ Begin Form
                     ColumnInfo ="\"\";\"\";\"3\";\"2\""
                     Name ="Visit_Year"
                     RowSourceType ="Table/Query"
-                    RowSource ="SELECT qry_sel_Infest_Year.Visit_Year FROM qry_sel_Infest_Year; "
+                    RowSource ="SELECT DISTINCT Visit_Year FROM qry_sel_cover_Year WHERE [Unit_Code] = 'COLM' OR"
+                        "DER BY Visit_Year; "
                     ColumnWidths ="2820"
+                    AfterUpdate ="[Event Procedure]"
+                    OnGotFocus ="[Event Procedure]"
+                    OnClick ="[Event Procedure]"
+                    OnChange ="[Event Procedure]"
 
                     Begin
                         Begin Label
@@ -145,14 +155,14 @@ Begin Form
                     Width =1350
                     Height =299
                     TabIndex =3
-                    Name ="ButtonReport"
+                    Name ="btnReport"
                     Caption ="Create Table"
                     OnClick ="[Event Procedure]"
 
-                    WebImagePaddingLeft =3
-                    WebImagePaddingTop =3
-                    WebImagePaddingRight =2
-                    WebImagePaddingBottom =2
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
                 End
             End
         End
@@ -164,32 +174,132 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Compare Database
+Option Explicit
 
-Private Sub ButtonClose_Click()
-On Error GoTo Err_ButtonClose_Click
+' =================================
+' MODULE:       frm_Species_Cover_by_Route
+' Level:        Form module
+' Version:      1.01
+' Description:  File and directory related functions & subroutines
+'
+' Source/date:  Unknown
+' Adapted:      Bonnie Campbell, May 2017
+' Revisions:    Unknown        - 1.00 - initial version
+'               BLC, 5/10/2017 - 1.01 - documentation, added Form_Open(), Visit_Year_AfterUpdate()
+' =================================
 
+' ---------------------------------
+'  Methods
+' ---------------------------------
 
-    DoCmd.Close
+' ---------------------------------
+' SUB:          Form_Open
+' Description:  Form opening actions
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    BLC - 5/10/2017 - initial version
+' ---------------------------------
+Private Sub Form_Open(Cancel As Integer)
+On Error GoTo Err_Handler
 
-Exit_ButtonClose_Click:
+    'initialize (year & create table button disabled until park selection)
+    Me.Visit_Year.Enabled = False
+    Me.btnReport.Enabled = False
+
+Exit_Procedure:
     Exit Sub
 
-Err_ButtonClose_Click:
-    MsgBox Err.Description
-    Resume Exit_ButtonClose_Click
-    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - Form_Open[frm_Species_Cover_by_Route form])"
+    End Select
+    Resume Exit_Procedure
 End Sub
 
-
+' ---------------------------------
+' SUB:          Park_Code_AfterUpdate
+' Description:  Sets park code/visit yeas filtering
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  -
+' Adapted:      Bonnie Campbell, May 2017 - initial version
+' Revisions:    Unknown         - initial version
+'               BLC - 5/10/2017 - added documentation, enabled Visit_Year
+' ---------------------------------
 Private Sub Park_Code_AfterUpdate()
+On Error GoTo Err_Handler
+
   If Not IsNull(Me!Park_Code) Then
+    Me!Visit_Year.Enabled = True
     Me!Visit_Year.RowSource = "SELECT Distinct Visit_Year FROM qry_sel_cover_Year WHERE [Unit_Code] = '" & Me!Park_Code & "' ORDER BY Visit_Year"
     Me.Refresh
   End If
+
+Exit_Procedure:
+    Exit Sub
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - Park_Code_AfterUpdate[frm_Species_Cover_by_Route form])"
+    End Select
+    Resume Exit_Procedure
 End Sub
-Private Sub ButtonReport_Click()
-' Build work table for Species cover by route
-' Russ DenBleyker - Northern Colorado Plateau Network - January 2010
+
+' ---------------------------------
+' SUB:          Visit_Year_AfterUpdate
+' Description:  Sets park code/visit yeas filtering
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Bonnie Campbell, May 2017 - initial version
+' Adapted:      -
+' Revisions:    BLC - 5/11/2017 - initial version
+' ---------------------------------
+Private Sub Visit_Year_AfterUpdate()
+On Error GoTo Err_Handler
+
+  If Not IsNull(Me!Visit_Year) Then
+    Me!btnReport.Enabled = True
+  End If
+
+Exit_Procedure:
+    Exit Sub
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - Visit_Year_AfterUpdate[frm_Species_Cover_by_Route form])"
+    End Select
+    Resume Exit_Procedure
+End Sub
+
+' ---------------------------------
+' SUB:          btnReport_Click
+' Description:  Builds work table for species cover by route
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Russ DenBleyker - January 2010
+' Adapted:      Bonnie Campbell, May 2017 - initial version
+' Revisions:    RDB - 1/2010    - initial version
+'               BLC - 5/10/2017 - added documentation, removed error message for Visit_Year (revised
+'                                 to be disabled instead)
+' ---------------------------------
+Private Sub btnReport_Click()
+On Error GoTo Err_Handler
 
   Dim db As DAO.Database
   Dim tdf As TableDef
@@ -213,7 +323,7 @@ Private Sub ButtonReport_Click()
   ' column 2 is total transect count
   Dim TCount As Variant
   Dim ArrayIndex As Integer
-  Dim arrayend As Integer
+  Dim ArrayEnd As Integer
   Dim EmptyTransects As Integer
   Dim PlotCount As Integer  ' Count of transects in which species was found
   Dim intTextLength As Integer
@@ -221,55 +331,86 @@ Private Sub ButtonReport_Click()
   Dim CoverCalc As Double
   Dim varStandardDeviation As Variant
   
-   If IsNull(Me!Park_Code) Or IsNull(Me!Visit_Year) Then
-     MsgBox "You must select both park and year.", , "Species cover by route"
-     Exit Sub
-   End If
+'   If IsNull(Me!Park_Code) Or IsNull(Me!Visit_Year) Then
+'     MsgBox "You must select both park and year.", , "Species cover by route"
+'     Exit Sub
+'   End If
    
-   On Error Resume Next
-   DoCmd.DeleteObject acTable, "tbl_wrk_Route_Species"   ' Delete old work table if there was one
-   On Error GoTo Err_ButtonReport_Click
+'   On Error Resume Next
+   'remove existing work table (if it exists)
+   DoCmd.DeleteObject acTable, "tbl_wrk_Route_Species"
+   
+'   On Error GoTo Err_ButtonReport_Click
    ' Copy template table
    DoCmd.CopyObject , "tbl_wrk_Route_Species", acTable, "tbl_Species_Cover_Template"
 
   ' Create necessary table fields
-   strSQL = "SELECT Plot_ID FROM qry_Group_Cover_Route WHERE Unit_Code= '" & Me!Park_Code & "' AND Visit_Year= " & Me!Visit_Year
+   strSQL = "SELECT Plot_ID FROM qry_Group_Cover_Route WHERE Unit_Code= '" & Me!Park_Code & _
+            "' AND Visit_Year= " & Me!Visit_Year
    Set db = CurrentDb
    Set Routes = db.OpenRecordset(strSQL)
    Set tdf = db.TableDefs("tbl_wrk_Route_Species")
+   
    ArrayIndex = 0
+   
+   'iterate through transect routes
    Do Until Routes.EOF
-     strSQL = "SELECT Count(Transect) AS Transect_Count FROM qry_Group_Route_Transect GROUP BY Unit_Code, Visit_Year, Plot_ID HAVING Unit_Code= '" & Me!Park_Code & "' AND Plot_ID= '" & Routes!Plot_ID & "' AND Visit_Year= " & Me!Visit_Year
+     strSQL = "SELECT Count(Transect) AS Transect_Count " & _
+        "FROM qry_Group_Route_Transect " & _
+        "GROUP BY Unit_Code, Visit_Year, Plot_ID " & _
+        "HAVING Unit_Code= '" & Me!Park_Code & "' AND Plot_ID= '" & Routes!Plot_ID & _
+        "' AND Visit_Year= " & Me!Visit_Year
      Set Transects = db.OpenRecordset(strSQL)
-     TCount = Transects!transect_count  ' save transect count
+     
+     'save transect count
+     TCount = Transects!transect_count
+     
+     'cleanup
      Transects.Close
      Set Transects = Nothing
+     
      strRouteColumnName = Left(Routes!Plot_ID, 48) & "(" & TCount & ")"
      strCountColumnName = strRouteColumnName & "PlotCount"
      strCoverColumnName = strRouteColumnName & "CoverPct"
      strSEColumnName = strRouteColumnName & " (SE)"
+     
+     'add fields to table
      With tdf
   '     .Fields.Append .CreateField(strRouteColumnName, dbText, 50)
        .Fields.Append .CreateField(strCountColumnName, dbInteger)
        .Fields.Append .CreateField(strCoverColumnName, dbDouble)
        .Fields.Append .CreateField(strSEColumnName, dbDouble)
      End With
-     RouteArray(ArrayIndex, 0) = strRouteColumnName ' Save funky route name
+     
+     'save funky route name (RDB)
+     RouteArray(ArrayIndex, 0) = strRouteColumnName
      RouteArray(ArrayIndex, 1) = TCount
-     arrayend = ArrayIndex  ' Save last entry index
+     
+     'save last entry index
+     ArrayEnd = ArrayIndex
      ArrayIndex = ArrayIndex + 1
+     
      If ArrayIndex > 49 Then
        MsgBox "Route array overflow - increase array size.", , "Load Route Names"
        Exit Sub
      End If
+     
      Routes.MoveNext
    Loop
+   
+   'cleanup
    Routes.Close
    Set tdf = Nothing
    Set Routes = Nothing
 
-' calculate species cover by plot
-   strSQL = "SELECT * FROM qry_Select_Species_Cover WHERE Unit_Code = '" & Me!Park_Code & "' AND Visit_Year= " & Me!Visit_Year & " ORDER BY Plot_ID, Species"
+   'calculate species cover by plot
+'   strSQL = "SELECT * FROM qry_Select_Species_Cover " & _
+'        "WHERE Unit_Code = '" & Me!Park_Code & "' AND Visit_Year= " & Me!Visit_Year & _
+'        " ORDER BY Plot_ID, Species"
+   strSQL = "SELECT * FROM Select_Species_Cover " & _
+        "WHERE Unit_Code = '" & Me!Park_Code & "' AND Visit_Year= " & Me!Visit_Year & _
+        " ORDER BY Plot_ID, Species"
+   
    Set SpeciesIn = db.OpenRecordset(strSQL)
    SpeciesIn.MoveFirst
    PlotSave = Left(SpeciesIn!Plot_ID, 48)
@@ -285,7 +426,9 @@ Private Sub ButtonReport_Click()
    Do Until SpeciesIn.EOF
      If PlotSave <> Left(SpeciesIn!Plot_ID, 48) Or SpeciesSave <> SpeciesIn!Species Then
        ' write output record
-       strSQL = "SELECT * FROM tbl_wrk_Route_Species WHERE [Unit_Code]= '" & Me!Park_Code & "' AND [Species] = '" & SpeciesSave & "' AND [Visit_Year] = " & Me!Visit_Year
+       strSQL = "SELECT * FROM tbl_wrk_Route_Species " & _
+                "WHERE [Unit_Code]= '" & Me!Park_Code & _
+                "' AND [Species] = '" & SpeciesSave & "' AND [Visit_Year] = " & Me!Visit_Year
        Set WorkOutput = db.OpenRecordset(strSQL)
        If WorkOutput.EOF Then
          WorkOutput.Close
@@ -299,7 +442,7 @@ Private Sub ButtonReport_Click()
          WorkOutput.Edit
        End If
          ArrayIndex = 0
-         Do Until ArrayIndex > arrayend
+         Do Until ArrayIndex > ArrayEnd
            intTextLength = InStr(1, RouteArray(ArrayIndex, 0), SearchChar) - 1
            If Left(RouteArray(ArrayIndex, 0), intTextLength) = PlotSave Then
              strFieldName = RouteArray(ArrayIndex, 0) & "Plotcount"
@@ -328,7 +471,7 @@ Private Sub ButtonReport_Click()
              Exit Do
            End If
            ArrayIndex = ArrayIndex + 1
-           If ArrayIndex > arrayend Then
+           If ArrayIndex > ArrayEnd Then
              MsgBox "Name not found in route array", , "Set route name"
              Exit Sub
            End If
@@ -397,7 +540,9 @@ Private Sub ButtonReport_Click()
      SpeciesIn.MoveNext
    Loop
      ' write last output record
-       strSQL = "SELECT * FROM tbl_wrk_Route_Species WHERE [Unit_Code]= '" & Me!Park_Code & "' AND [Species] = '" & SpeciesSave & "' AND [Visit_Year] = " & Me!Visit_Year
+       strSQL = "SELECT * FROM tbl_wrk_Route_Species " & _
+                "WHERE [Unit_Code]= '" & Me!Park_Code & _
+                "' AND [Species] = '" & SpeciesSave & "' AND [Visit_Year] = " & Me!Visit_Year
        Set WorkOutput = db.OpenRecordset(strSQL)
        If WorkOutput.EOF Then
          WorkOutput.Close
@@ -411,7 +556,7 @@ Private Sub ButtonReport_Click()
          WorkOutput.Edit
        End If
          ArrayIndex = 0
-         Do Until ArrayIndex > arrayend
+         Do Until ArrayIndex > ArrayEnd
            intTextLength = InStr(1, RouteArray(ArrayIndex, 0), SearchChar) - 1
            If Left(RouteArray(ArrayIndex, 0), intTextLength) = PlotSave Then
              strFieldName = RouteArray(ArrayIndex, 0) & "Plotcount"
@@ -439,7 +584,7 @@ Private Sub ButtonReport_Click()
              Exit Do
            End If
            ArrayIndex = ArrayIndex + 1
-           If ArrayIndex > arrayend Then
+           If ArrayIndex > ArrayEnd Then
              MsgBox "Name not found in route array", , "Set route name"
              Exit Sub
            End If
@@ -451,11 +596,57 @@ Private Sub ButtonReport_Click()
    Set WorkOutput = Nothing
  '   MsgBox "Finished - results are in tbl_wrk_Route_Species.", , "Species Cover by Route"
    DoCmd.OpenQuery "qry_List_Route_Species"
-Exit_ButtonReport_Click:
+    
+Exit_Procedure:
     Exit Sub
 
-Err_ButtonReport_Click:
-    MsgBox Err.Description
-    Resume Exit_ButtonReport_Click
-    
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - btnReport_Click[frm_Species_Cover_by_Route])"
+    End Select
+    Resume Exit_Procedure
+End Sub
+
+' ---------------------------------
+' SUB:          btnClose_Click
+' Description:  Form closing actions
+' Parameters:   -
+' Returns:      -
+' Throws:       -
+' References:   -
+' Source/date:  Russ DenBleyker - January 2010
+' Adapted:      Bonnie Campbell, May 2017 - initial version
+' Revisions:    RDB - 1/2010    - initial version
+'               BLC - 5/10/2017 - added documentation
+' ---------------------------------
+Private Sub btnClose_Click()
+On Error GoTo Err_Handler
+
+    DoCmd.Close
+
+Exit_Procedure:
+    Exit Sub
+
+Err_Handler:
+    Select Case Err.Number
+      Case Else
+        MsgBox "Error #" & Err.Number & ": " & Err.Description, vbCritical, _
+            "Error encountered (#" & Err.Number & " - btnClose_Click[frm_Species_Cover_by_Route])"
+    End Select
+    Resume Exit_Procedure
+End Sub
+
+Private Sub Visit_Year_Change()
+ Debug.Print Me.Visit_Year.RowSource
+End Sub
+
+Private Sub Visit_Year_Click()
+
+ 
+End Sub
+
+Private Sub Visit_Year_GotFocus()
+ Debug.Print Me.Visit_Year.RowSource
 End Sub

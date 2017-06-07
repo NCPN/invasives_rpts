@@ -25,11 +25,11 @@ dbByte "DefaultView" ="2"
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
 dbBoolean "TotalsRow" ="0"
-dbBinary "GUID" = Begin
-    0x1b80d8ab936a2945a2bd72782b6a1882
-End
 dbText "Description" ="complete list of target species for a given year\015\012 (Target List Tool updat"
     "e)"
+dbBinary "GUID" = Begin
+    0x47eda344c1c07a4d9d70372a38d20b09
+End
 Begin
     Begin
         dbText "Name" ="tlu_NCPN_Plants.Co_Species"

@@ -591,7 +591,7 @@ Dim blnTableExists As Boolean
             For iCol = 0 To UBound(aryData, 2) ' - 1
                 
                 'add record field values for each record (aryFields - 1, row 0 = field names)
-                    rsProcess(aryFieldNames(iCol)).Value = aryData(iRow, iCol)
+                    rsProcess(aryFieldNames(iCol)).value = aryData(iRow, iCol)
 
             Next
             
@@ -717,10 +717,10 @@ Dim blnTableExists As Boolean
                 'handle Target_Area_ID vs. Extra_Area_ID since back-end table field names have not been adjusted
                 If aryFieldNames(iCol) = "Extra_Area_ID" Then
                     'add record field values for each record (aryFields - 1, row 0 = field names)
-                    rsProcess(aryFieldNames(iCol)).Value = rsList("Target_Area_ID").Value
+                    rsProcess(aryFieldNames(iCol)).value = rsList("Target_Area_ID").value
                 Else
                     'add record field values for each record (aryFields - 1, row 0 = field names)
-                    rsProcess(aryFieldNames(iCol)).Value = rsList(aryFieldNames(iCol)).Value
+                    rsProcess(aryFieldNames(iCol)).value = rsList(aryFieldNames(iCol)).value
                 End If
 '                iCol = iCol + 1
             Next

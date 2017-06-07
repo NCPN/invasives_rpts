@@ -1,11 +1,11 @@
 ﻿dbMemo "SQL" ="SELECT DISTINCT Master_Plant_Code_FK, LU_Code, Family, Species_Name, utah_specie"
     "s, Co_Species, Wy_Species, Master_Common_Name, ConcatRelated(\"ParkYearPriority\""
-    ", \"qry_Annual_Complete_Tgt_Species_Lists\",\"Park= 'COLM' AND Species_Name='\"+"
+    ", \"qry_Annual_Complete_Tgt_Species_Lists\",\"Park= 'CURE' AND Species_Name='\"+"
     "Species_Name+\"'\",'',\"|\") AS ParkYearPriorities, (SELECT Min(TgtYear) FROM qr"
-    "y_Annual_Complete_Tgt_Species_Lists WHERE Park = 'COLM') AS MinYear, (SELECT Max"
-    "(TgtYear) FROM qry_Annual_Complete_Tgt_Species_Lists WHERE Park = 'COLM') AS Max"
+    "y_Annual_Complete_Tgt_Species_Lists WHERE Park = 'CURE') AS MinYear, (SELECT Max"
+    "(TgtYear) FROM qry_Annual_Complete_Tgt_Species_Lists WHERE Park = 'CURE') AS Max"
     "Year\015\012FROM (SELECT * FROM qry_Annual_Complete_Tgt_Species_Lists WHERE Park"
-    " = 'COLM')  AS [%$##@_Alias]\015\012GROUP BY Park, Master_Plant_Code_FK, LU_Code"
+    " = 'CURE')  AS [%$##@_Alias]\015\012GROUP BY Park, Master_Plant_Code_FK, LU_Code"
     ", Family, Species_Name, Priority, Transect_Only, Target_Area_ID, Tgt_Area, utah_"
     "species, Co_Species, Wy_Species, Master_Common_Name, PriorityTarget, SpeciesYear"
     ";\015\012"
@@ -21,7 +21,7 @@ dbByte "RecordsetType" ="0"
 dbBoolean "TotalsRow" ="0"
 dbText "Description" ="Target species summary for all parks for a given year  (Target List Tool update)"
 dbBinary "GUID" = Begin
-    0xb6562f19d91a3243baff7772e3fb414a
+    0x4cec6e00241c6f00e4aac72f02000000
 End
 Begin
     Begin

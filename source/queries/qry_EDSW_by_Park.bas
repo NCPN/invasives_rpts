@@ -8,11 +8,11 @@ dbInteger "ODBCTimeout" ="60"
 dbBoolean "OrderByOn" ="0"
 dbByte "Orientation" ="0"
 dbByte "DefaultView" ="2"
-dbBinary "GUID" = Begin
-    0x0065b9280c4687479ae354ec74dc9695
-End
 dbBoolean "FilterOnLoad" ="0"
 dbBoolean "OrderByOnLoad" ="-1"
+dbBinary "GUID" = Begin
+    0x550874a7afa91046bdaf26c5eeff2453
+End
 Begin
     Begin
         dbText "Name" ="Visit_Year"

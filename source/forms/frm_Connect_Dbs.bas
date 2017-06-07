@@ -28,10 +28,10 @@ Begin Form
     Bottom =8895
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
-        0xabea2039169de340
+        0xe2aad91518efe440
     End
     RecordSource ="SELECT tsys_Link_Dbs.* FROM tsys_Link_Dbs ORDER BY tsys_Link_Dbs.Sort_order, tsy"
-        "s_Link_Dbs.Link_db;"
+        "s_Link_Dbs.Link_db; "
     Caption =" Update Database Connections"
     OnOpen ="[Event Procedure]"
     DatasheetFontName ="Arial"
@@ -812,6 +812,7 @@ End Sub
 ' References:   -
 ' Source/date:  Bonnie Campbell, May, 2015 for NCPN invasives reporting tool
 ' Revisions:    BLC, 5/21/2015 - initial version
+'               BLC, 5/10/2017 - remove setting vbCancel to true
 ' ---------------------------------
 Private Sub cbxIs_ODBC_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo Err_Handler
@@ -823,7 +824,7 @@ Private Sub cbxIs_ODBC_KeyDown(KeyCode As Integer, Shift As Integer)
     strMsgConfirm = "To change the connection type, you must delete and relink" & vbCrLf & _
         "the tables for this database manually ... are you sure?"
     If MsgBox(strMsgConfirm, vbOKCancel, "Confirm change") = vbCancel Then
-        vbCancel = True
+'        vbCancel = True 'error >> assignment to constant not permitted
         Me.ActiveControl.Undo
     Else
         'disable cbxBackups control
@@ -1549,9 +1550,9 @@ Private Sub btnUpdateLinks_Click()
 
         With rst
             .Edit
-            !Link_db = rst.Fields("New_db").Value
-            !File_path = rst.Fields("New_path").Value
-            !Server = rst.Fields("New_server").Value
+            !Link_db = rst.Fields("New_db").value
+            !File_path = rst.Fields("New_path").value
+            !Server = rst.Fields("New_server").value
             !New_db = Null
             !New_path = Null
             !New_server = Null

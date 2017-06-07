@@ -19,12 +19,12 @@ Begin Form
     Bottom =5580
     DatasheetGridlinesColor =14806254
     RecSrcDt = Begin
-        0x5897ca243799e440
+        0x8865f81518efe440
     End
     RecordSource ="SELECT tlu_NCPN_Plants.Master_PLANT_Code AS Code, tlu_NCPN_Plants.Master_Species"
         " AS Species, Switch(tlu_NCPN_Plants.LU_Code Is Null,\" \",tlu_NCPN_Plants.LU_Cod"
         "e<>\"\",tlu_NCPN_Plants.LU_Code) AS LUCode FROM tlu_NCPN_Plants ORDER BY tlu_NCP"
-        "N_Plants.Master_Species;"
+        "N_Plants.Master_Species; "
     DatasheetFontName ="Calibri"
     PrtMip = Begin
         0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
