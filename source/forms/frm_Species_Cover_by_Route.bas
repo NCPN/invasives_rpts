@@ -17,7 +17,7 @@ Begin Form
     Left =735
     Top =4710
     Right =7935
-    Bottom =8295
+    Bottom =7590
     DatasheetGridlinesColor =12632256
     RecSrcDt = Begin
         0x3d34192b53bbe340
